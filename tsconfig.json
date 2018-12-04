@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "target": "es5",
+    "allowJs": true,
+    "moduleResolution": "classic",
+   // "outFile":"./build/build.js",
+    "baseUrl": ".",
+    "paths": {
+    }
+  },
+ "files": ["./main.ts"],
+    "exclude": [
+      "./genObjectList.js",
+      "./index.js",
+      "./protoTypeScript/",
+      "./spinetest/",
+      "./lib/",
+      "./dist/",
+      "./levels/",
+      "levels/",
+      "../../../../../pkg"
+  ]
+
+  }

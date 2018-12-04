@@ -1,0 +1,38 @@
+{
+  "name": "elektri4ka",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "objects": "node genObjectList.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dearcj/elektri4ka.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dearcj/elektri4ka/issues"
+  },
+  "homepage": "https://github.com/dearcj/elektri4ka#readme",
+  "dependencies": {
+    "@types/gsap": "^1.20.0",
+    "fmath": "^1.0.1",
+    "gsap": "^2.0.2",
+    "pixi-heaven": "^0.1.11",
+    "pixi-spine": "^1.5.19",
+    "protobufjs": "^6.8.3"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.3.0",
+    "@types/pixi-spine": "^1.4.2",
+    "@types/pixi.js": "^4.7.0",
+    "@types/webgl-ext": "0.0.29",
+    "electron": "^1.8.4"
+  }
+}

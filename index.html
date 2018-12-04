@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html id="page" >
+<head>
+    <meta charset="UTF-8">
+
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+            crossorigin="anonymous"></script>    <script src="lib/pixi.min.js"></script>
+    <script src="lib/TweenMax.min.js"></script>
+    <script src="lib/CustomEase.js"></script>
+    <script src="lib/CubicBezier.js"></script>
+    <script src="lib/fmath.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+
+    <script src="//vk.com/js/api/openapi.js" type="text/javascript"></script>
+    <script>
+        window.RESULT_MODAL_IN_MENU = false;
+        window.API_PHP_FILE = 'http://localhost:80/index.php';
+        window.VK_APP_ID = 6445810;
+        window.VK_PHOTO_LINK = 'photo2882845_456239374';
+        window.LINK_TO_SOCIAL = window.location.origin; //????
+        window.FB_APP_ID = '332998647104459';
+        window.PIXIRatio = 0.5;
+    </script>
+
+    <script src="lib/require.js"></script>
+    <script src="bundle/bundle.js"></script>
+    <script>
+        requirejs(['main'], function(foo) {});
+    window.startTime = new Date();
+        function doubleRescale() {
+            setTimeout(rescale, 600);
+            rescale();
+        }
+
+        function onWindowResize() {
+            doubleRescale();
+            window.scrollTo(0,1);
+        }
+
+    </script>
+</head>
+<body style="border: none; margin: 0px ">
+
+
+
+<script type="text/javascript">
+    VK.init({
+        apiId: window.VK_APP_ID
+    });
+</script>
+
+
+<script>
+
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : window.FB_APP_ID,
+            xfbml      : true,
+            version    : 'v2.5'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+
+   /* window.twttr = (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+                t = window.twttr || {};
+        if (d.getElementById(id)) return t;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
+
+        t._e = [];
+        t.ready = function(f) {
+            t._e.push(f);
+        };
+
+        return t;
+    }(document, "script", "twitter-wjs")); */
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
