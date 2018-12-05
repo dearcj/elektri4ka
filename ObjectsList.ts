@@ -1,3 +1,4 @@
+import {AngryBar} from "./Objects/AngryBar";
 import {Aligner} from "./Neu/BaseObjects/Aligner";
 import {BaseLighting} from "./Neu/BaseObjects/BaseLighting";
 import {BaseParticleSystem} from "./Neu/BaseObjects/BaseParticleSystem";
@@ -14,6 +15,7 @@ import {Tooltip} from "./Neu/BaseObjects/Tooltip";
 import {TrainEffect} from "./Neu/BaseObjects/TrainEffect";
 
 export let ObjectNames = {
+  AngryBar :AngryBar,
   Aligner :Aligner,
   BaseLighting :BaseLighting,
   BaseParticleSystem :BaseParticleSystem,
@@ -30,4 +32,6 @@ export let ObjectNames = {
   TrainEffect :TrainEffect,
 };
 export let LevelNames = [
+  "levels/elektri4ka.tsx",
+  "levels/gameui.tmx",
 ];

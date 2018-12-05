@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="1" nextlayerid="6" nextobjectid="17">
+ <tileset firstgid="1" source="elektri4ka.tsx"/>
+ <objectgroup draworder="index" id="5" name="bg">
+  <object id="13" gid="89" x="-32" y="279" width="699" height="320">
+   <properties>
+    <property name="color" type="color" value="#ffcecece"/>
+   </properties>
+  </object>
+  <object id="14" gid="90" x="-37.2" y="846" width="710.4" height="582"/>
+  <object id="15" gid="89" x="-54" y="1136" width="743" height="308"/>
+  <object id="16" gid="115" x="-21" y="272" width="675" height="25"/>
+ </objectgroup>
+ <objectgroup color="#b02020" draworder="index" id="3" name="utils" locked="1" opacity="0.1">
+  <object id="2" x="0" y="0" width="640" height="1024"/>
+ </objectgroup>
+ <objectgroup id="2" name="main"/>
+ <objectgroup id="4" name="gui">
+  <object id="3" type="AngryBar" x="309" y="32" width="65" height="73"/>
+  <object id="4" name="score" type="TextBox" x="479" y="179" width="146" height="38">
+   <properties>
+    <property name="align" value="right"/>
+    <property name="fontscale" type="float" value="1.1"/>
+    <property name="text" value=""/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

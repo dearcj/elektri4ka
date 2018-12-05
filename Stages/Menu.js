@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "./Stage", "../main", "../Objects/Button", "../Objects/TextBox"], function (require, exports, Stage_1, main_1, Button_1, TextBox_1) {
+define(["require", "exports", "../Neu/Stage", "../main", "../Neu/BaseObjects/Button", "../Neu/BaseObjects/TextBox"], function (require, exports, Stage_1, main_1, Button_1, TextBox_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.API_PHP_FILE = "http://levelgroup.ru/game.php";
@@ -46,7 +46,7 @@ define(["require", "exports", "./Stage", "../main", "../Objects/Button", "../Obj
         Menu.prototype.onShow = function () {
             _super.prototype.onShow.call(this);
             main_1._.lm.load(this, 'menu', null);
-            main_1._.sm.findStringId("btnnew").click = function () {
+            main_1._.sm.findOne("btnnew").click = function () {
                 // vkpost("lalalal");
                 main_1._.sm.openStage(main_1._.game);
             };
@@ -57,7 +57,7 @@ define(["require", "exports", "./Stage", "../main", "../Objects/Button", "../Obj
             var g = main_1._.cs("btnton1.png");
             g.scale.x = 1.5;
             g.scale.y = 1.5;
-            var btnTON = new Button_1.Button(main_1._.sm.findStringId("btntonpos").pos, g);
+            var btnTON = new Button_1.Button(main_1._.sm.findOne("btntonpos").pos, g);
             btnTON.init({ text: "N+1", fontscale: 0.7, });
             btnTON.click = function () {
                 window.open(window.LINK_TO_SOCIAL);

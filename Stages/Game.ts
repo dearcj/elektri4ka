@@ -1,8 +1,12 @@
-import {Stage} from "./Stage";
-import {$, _, SCR_HEIGHT, SCR_WIDTH, SCR_WIDTH_HALF} from "../main";
+import {Stage} from "../Neu/Stage";
+import {$, _, SCR_HEIGHT, SCR_WIDTH} from "../main";
 import {O} from "../Neu/BaseObjects/O";
 import {fbpost, okpost, twpost, vkpost} from "../Socials";
 import {API_PHP_FILE} from "./Menu";
+import {Button} from "../Neu/BaseObjects/Button";
+import {TextBox} from "../Neu/BaseObjects/TextBox";
+import {ProblemGenerator} from "../ProblemGenerator";
+import {ToolsBar} from "../Objects/ToolsBar";
 
 type LevelShape = {
     ShapeID: number,
@@ -54,14 +58,27 @@ export let LevelsShapes: Array<Array<LevelShape>> = [
     ]];
 
 export class Game extends Stage {
+    get score(): number {
+        return this._score;
+    }
+
+    set score(value: number) {
+        this._score = value;
+        let tb = _.sm.findOne("score");
+        let scoreStr = value.toString();
+        let len = scoreStr.length;
+        let str = ('00000' + scoreStr).slice(-5);
+        (<TextBox>tb).text = str;
+    }
     whiteSpace: PIXI.Graphics;
     private resModal: Array<O>;
-    public score: number = 0;
+    private _score: number = 0;
     secs: number = 0;
     level: number = 3;
     private timeInterval: any;
     public limit: number = 0;
-
+    public pg;
+    public toolsBar: ToolsBar;
 
     submitScore(s: number, social_id: string, name: string, last_name: string) {
         if (s == 0) return;
@@ -73,18 +90,20 @@ export class Game extends Stage {
 
     onShow() {
         super.onShow();
+        this.toolsBar = new ToolsBar();
 
-        console.log("wwww");
-        _.lm.load(this, 'game', null);
-        let btnMenu = _.sm.findStringId("menu");
+        this.pg = new ProblemGenerator();
+        _.lm.load(this, 'gameui', null);
+        this.pg.run();
+        this.score = 1231;
+      /*  let btnMenu = _.sm.findOne("menu");
        (<Button>btnMenu).click = () => {
             _.sm.openStage(_.menu);
         };
-        let btnSubmit = _.sm.findStringId("btnsubmit");
+        let btnSubmit = _.sm.findOne("btnsubmit");
         (<Button>btnSubmit).textField.tint = 0x111111;
-        (<Button>btnSubmit).prevTextTint = 0x111111;
 
-        let btnReset = _.sm.findStringId("btnreset");
+        let btnReset = _.sm.findOne("btnreset");
         (<Button>btnReset).click = () => {
             _.sm.openStage(_.game);
         };
@@ -103,7 +122,7 @@ export class Game extends Stage {
             }
         };
 
-        let lev = _.sm.findStringId("lev");
+        let lev = _.sm.findOne("lev");
         (<TextBox>lev).text = this.level.toString();
         this.secs = 0;
         this.updateTime();
@@ -121,12 +140,6 @@ export class Game extends Stage {
             this.limit = 18;
         }
 
-
-        if (this.level == 1 || this.level == 2 || this.level == 3) {
-            let helper = new Helper([SCR_WIDTH / 2, 180]);
-            helper.init({})
-        }
-
         this.whiteSpace= new PIXI.Graphics();
         this.whiteSpace.x = 0;
         this.whiteSpace.clear();
@@ -134,10 +147,7 @@ export class Game extends Stage {
         this.whiteSpace.drawRect(SCR_WIDTH, 0, 300, SCR_HEIGHT);
         this.whiteSpace.endFill();
         _.sm.gui.addChild(this.whiteSpace);
-
-
-
-        // _.game.ShowResModal();
+        // _.game.ShowResModal(); */
     }
 
     CloseResModal() {
@@ -148,24 +158,24 @@ export class Game extends Stage {
         this.whiteSpace = O.rp(this.whiteSpace);
         this.timeInterval = _.killTween(this.timeInterval);
         super.onHide(s);
-
+        this.toolsBar.killNow();
     }
 
     ShowResModal() {
         this.timeInterval = _.killTween(this.timeInterval);
         this.resModal = _.lm.load(_.game, 'modal', null);
-        let btnClose = _.sm.findStringId("btncancel", this.resModal);
-        let win = _.sm.findStringId("scorewin", this.resModal);
-        let ending = this.score % 10;
+        let btnClose = _.sm.findOne("btncancel", this.resModal);
+        let win = _.sm.findOne("scorewin", this.resModal);
+        let ending = this._score % 10;
         let xxx = 'клеток';
         if (ending == 1) xxx = 'клетку';
         if (ending == 2 || ending == 3 || ending == 4 ) xxx = 'клетки';
-        (<TextBox>win).text = 'в ' + this.score.toString() + ' ' + xxx;
+        (<TextBox>win).text = 'в ' + this._score.toString() + ' ' + xxx;
 
-        let vk = <Button>_.sm.findStringId("btnvk", this.resModal);
-        let tw = <Button>_.sm.findStringId("btntw", this.resModal);
-        let ok = <Button>_.sm.findStringId("btnok", this.resModal);
-        let fb = <Button>_.sm.findStringId("btnfb", this.resModal);
+        let vk = <Button>_.sm.findOne("btnvk", this.resModal);
+        let tw = <Button>_.sm.findOne("btntw", this.resModal);
+        let ok = <Button>_.sm.findOne("btnok", this.resModal);
+        let fb = <Button>_.sm.findOne("btnfb", this.resModal);
         vk.click = () => {
             vkpost(`Упакуй меня, если сможешь!
 Эта математическая игра будет покруче 2048`);
@@ -178,7 +188,7 @@ export class Game extends Stage {
         let g = _.cs("btnton1.png");
         g.scale.x = 1.5;
         g.scale.y = 1.5;
-        let btnTON = new Button(_.sm.findStringId("btntonpos").pos, g);
+        let btnTON = new Button(_.sm.findOne("btntonpos").pos, g);
         btnTON.init({text:"N+1", fontscale: 0.7,});
         (<Button>btnTON).click = () => {
             window.open((<any>window).LINK_TO_SOCIAL);
@@ -188,10 +198,10 @@ export class Game extends Stage {
     }
 
     SetScore(x: number) {
-        this.score = x;
+        this._score = x;
         if (x == 0)
-            (<TextBox>_.sm.findStringId("score")).text = ''; else
-            (<TextBox>_.sm.findStringId("score")).text = this.AddZeroes(x);
+            (<TextBox>_.sm.findOne("_score")).text = ''; else
+            (<TextBox>_.sm.findOne("_score")).text = this.AddZeroes(x);
     }
 
     private AddZeroes(x: number): string {
@@ -203,7 +213,7 @@ export class Game extends Stage {
     private updateTime() {
         let mins = Math.floor(this.secs / 60);
         let secs = this.secs % 60;
-        let time = _.sm.findStringId("time");
+        let time = _.sm.findOne("time");
         (<TextBox>time).text = mins + ":" + (secs > 10 ? secs.toString() : "0" + secs.toString());
     }
 }

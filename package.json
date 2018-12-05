@@ -25,6 +25,7 @@
     "fmath": "^1.0.1",
     "gsap": "^2.0.2",
     "pixi-heaven": "^0.1.11",
+    "pixi-layers": "^0.1.9",
     "pixi-spine": "^1.5.19",
     "protobufjs": "^6.8.3"
   },

@@ -1,3 +1,4 @@
+import './node_modules/pixi-heaven/dist/pixi-heaven.js';
 import {Application} from "./Neu/Application";
 import {Sound} from "./Neu/Sound";
 import {Menu} from "./Stages/Menu";
@@ -5,7 +6,6 @@ import {Game} from "./Stages/Game";
 import {LoadQueue, m, Vec2} from "./Neu/Math";
 import {Engine, Runner} from "./lib/matter";
 import {ResourceManager} from "./Neu/ResourceManager";
-import './node_modules/pixi-heaven/dist/pixi-heaven.js';
 import {
     CAMERA_DEBUG,
     MAX_SCR_HEIGHT,
@@ -13,6 +13,7 @@ import {
 } from "./ClientSettings";
 import {TextBox} from "./Neu/BaseObjects/TextBox";
 import {BaseLighting} from "./Neu/BaseObjects/BaseLighting";
+import {LevelNames} from "./ObjectsList";
 export let $: any = (<any>window).$;
 export type PIXIContainer = any;
 
@@ -24,18 +25,19 @@ const GLOBAL_MUSIC_ASSETS = [];
 const GLOBAL_SOUND_ASSETS = [
 ];//
 
+TextBox.DEFAULT_FONT = "main-export";
+
 const GLOBAL_ASSETS = [
     ///////////////////////////////////////////
     // Atlases
     ///////////////////////////////////////////
 
-    'atlas/atlas.json',
+    'art/atlas.json',
 
     ///////////////////////////////////////////
     // Fonts
     ///////////////////////////////////////////
     'fonts/main-export.xml',
-    'fonts/font2-export.xml',
 ];
 
 export let PIXIUI = (<any>PIXI).UI;
@@ -43,7 +45,6 @@ export let PIXIUI = (<any>PIXI).UI;
 export class Main extends Application {
     [x: string]: any;
 
-    speedUp: boolean;
 
     public menu: Menu = new Menu();
     public game: Game = new Game();
@@ -53,7 +54,6 @@ export class Main extends Application {
     private preloadBar: PIXI.Graphics;
     public __DIR: string;
     public cursor: PIXI.Sprite;
-    private lostFocusAt: number;
     assets: Array<string>;
     assetsLoaded: number = 0;
     private loadingCounter: number = 0;
@@ -79,7 +79,6 @@ export class Main extends Application {
         this.addStats = false;
 
         console.log("Device pixel ratio: ", window.devicePixelRatio);
-
         let baseW = MAX_SCR_WIDTH;//MAX_SCR_WIDTH;
         let baseH = MAX_SCR_HEIGHT;//MAX_SCR_HEIGHT;
 
@@ -134,7 +133,6 @@ export class Main extends Application {
         this.engine = Engine.create();
         let runner = Runner.create({});
 
-        TextBox.DEFAULT_FONT = "smallfontp";
         BaseLighting.DEFAULT_GFX = "Camera-Shadow.png";
         Runner.run(runner, this.engine);
 
@@ -145,13 +143,38 @@ export class Main extends Application {
 
         this.rm = new ResourceManager("animations/");
 
-        this.rm.loadAssets(GLOBAL_ASSETS, (loader: any, evt: any) => {
+        this.rm.loadAssets(GLOBAL_ASSETS.concat(LevelNames), (loader: any, evt: any) => {
             this.drawPreloaderProgress(loader.progress);
             this.assetsLoaded++;
         }, loadQueue.onLoad().bind(loadQueue));
 
         this.sound = new Sound();
         this.sound.load(GLOBAL_MUSIC_ASSETS, GLOBAL_SOUND_ASSETS, loadQueue.onLoad());
+
+        document.addEventListener("keydown", (e) => {
+            let keyCode = e.keyCode;
+            switch (keyCode) {
+                case 68: //d
+                    _.sm.camera.x += 22.5;
+                    break;
+                case 83: //s
+                    _.sm.camera.y += 22.5;
+                    break;
+                case 65: //a
+                    _.sm.camera.x -= 22.5;
+                    break;
+                case 87: //w
+                    _.sm.camera.y -= 22.5;
+                    break;
+                case 88: //x
+                    _.sm.camera.zoom -= 0.02;
+                    break;
+                case 90: //z
+                    _.sm.camera.zoom += 0.02;
+                    break;
+            }
+        });
+
     }
 
 }

@@ -1,7 +1,7 @@
-import {Stage} from "./Stage";
+import {Stage} from "../Neu/Stage";
 import {$, _} from "../main";
-import {Button} from "../Objects/Button";
-import {TextBox} from "../Objects/TextBox";
+import {Button} from "../Neu/BaseObjects/Button";
+import {TextBox} from "../Neu/BaseObjects/TextBox";
 import {vkpost} from "../Socials";
 
 export let API_PHP_FILE = "http://levelgroup.ru/game.php";
@@ -32,7 +32,7 @@ export class Menu extends Stage {
     onShow() {
         super.onShow();
         _.lm.load(this, 'menu', null);
-        (<Button>_.sm.findStringId("btnnew")).click = ()=>{
+        (<Button>_.sm.findOne("btnnew")).click = ()=>{
            // vkpost("lalalal");
             _.sm.openStage(_.game)
         };
@@ -44,7 +44,7 @@ export class Menu extends Stage {
         let g = _.cs("btnton1.png");
         g.scale.x = 1.5;
         g.scale.y = 1.5;
-        let btnTON = new Button(_.sm.findStringId("btntonpos").pos, g);
+        let btnTON = new Button(_.sm.findOne("btntonpos").pos, g);
         btnTON.init({text:"N+1", fontscale: 0.7,});
         (<Button>btnTON).click = () => {
             window.open((<any>window).LINK_TO_SOCIAL);

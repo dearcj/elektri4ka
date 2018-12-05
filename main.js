@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu", "./Stages/Game", "./Neu/Math", "./lib/matter", "./Neu/ResourceManager", "./ClientSettings", "./Neu/BaseObjects/TextBox", "./Neu/BaseObjects/BaseLighting", "./node_modules/pixi-heaven/dist/pixi-heaven.js"], function (require, exports, Application_1, Sound_1, Menu_1, Game_1, Math_1, matter_1, ResourceManager_1, ClientSettings_1, TextBox_1, BaseLighting_1) {
+define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu", "./Stages/Game", "./Neu/Math", "./lib/matter", "./Neu/ResourceManager", "./ClientSettings", "./Neu/BaseObjects/TextBox", "./Neu/BaseObjects/BaseLighting", "./ObjectsList", "./node_modules/pixi-heaven/dist/pixi-heaven.js"], function (require, exports, Application_1, Sound_1, Menu_1, Game_1, Math_1, matter_1, ResourceManager_1, ClientSettings_1, TextBox_1, BaseLighting_1, ObjectsList_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.$ = window.$;
@@ -19,16 +19,16 @@ define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu
     exports.SCR_HEIGHT = ClientSettings_1.MAX_SCR_HEIGHT;
     var GLOBAL_MUSIC_ASSETS = [];
     var GLOBAL_SOUND_ASSETS = []; //
+    TextBox_1.TextBox.DEFAULT_FONT = "main-export";
     var GLOBAL_ASSETS = [
         ///////////////////////////////////////////
         // Atlases
         ///////////////////////////////////////////
-        'atlas/atlas.json',
+        'art/atlas.json',
         ///////////////////////////////////////////
         // Fonts
         ///////////////////////////////////////////
         'fonts/main-export.xml',
-        'fonts/font2-export.xml',
     ];
     exports.PIXIUI = PIXI.UI;
     var Main = /** @class */ (function (_super) {
@@ -102,7 +102,6 @@ define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu
             this.initPreloader();
             this.engine = matter_1.Engine.create();
             var runner = matter_1.Runner.create({});
-            TextBox_1.TextBox.DEFAULT_FONT = "smallfontp";
             BaseLighting_1.BaseLighting.DEFAULT_GFX = "Camera-Shadow.png";
             matter_1.Runner.run(runner, this.engine);
             var loadQueue = new Math_1.LoadQueue(function () {
@@ -110,12 +109,35 @@ define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu
                 _this.loadComplete();
             });
             this.rm = new ResourceManager_1.ResourceManager("animations/");
-            this.rm.loadAssets(GLOBAL_ASSETS, function (loader, evt) {
+            this.rm.loadAssets(GLOBAL_ASSETS.concat(ObjectsList_1.LevelNames), function (loader, evt) {
                 _this.drawPreloaderProgress(loader.progress);
                 _this.assetsLoaded++;
             }, loadQueue.onLoad().bind(loadQueue));
             this.sound = new Sound_1.Sound();
             this.sound.load(GLOBAL_MUSIC_ASSETS, GLOBAL_SOUND_ASSETS, loadQueue.onLoad());
+            document.addEventListener("keydown", function (e) {
+                var keyCode = e.keyCode;
+                switch (keyCode) {
+                    case 68: //d
+                        exports._.sm.camera.x += 22.5;
+                        break;
+                    case 83: //s
+                        exports._.sm.camera.y += 22.5;
+                        break;
+                    case 65: //a
+                        exports._.sm.camera.x -= 22.5;
+                        break;
+                    case 87: //w
+                        exports._.sm.camera.y -= 22.5;
+                        break;
+                    case 88: //x
+                        exports._.sm.camera.zoom -= 0.02;
+                        break;
+                    case 90: //z
+                        exports._.sm.camera.zoom += 0.02;
+                        break;
+                }
+            });
         };
         return Main;
     }(Application_1.Application));

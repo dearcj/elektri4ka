@@ -54,9 +54,9 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>4096</int>
             <key>height</key>
-            <int>2048</int>
+            <int>4096</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -141,49 +141,49 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>sources/back_button@1.5x.png</filename>
-            <filename>sources/back_button_click@1.5x.png</filename>
-            <filename>sources/bg_app@1.5x.png</filename>
-            <filename>sources/bg_field@1.5x.png</filename>
-            <filename>sources/ÉÑßπαß 48@1.5x.png</filename>
-            <filename>sources/icon_1@1.5x.png</filename>
-            <filename>sources/icon_1_click@1.5x.png</filename>
-            <filename>sources/icon_2@1.5x.png</filename>
-            <filename>sources/icon_2_click@1.5x.png</filename>
-            <filename>sources/icon_3@1.5x.png</filename>
-            <filename>sources/icon_3_click@1.5x.png</filename>
-            <filename>sources/icon_4@1.5x.png</filename>
-            <filename>sources/icon_4_click@1.5x.png</filename>
-            <filename>sources/icon_5@1.5x.png</filename>
-            <filename>sources/icon_5_click@1.5x.png</filename>
-            <filename>sources/icon_problembar_chp@1.5x.png</filename>
-            <filename>sources/logo@1.5x.png</filename>
-            <filename>sources/menu@1.5x.png</filename>
-            <filename>sources/menu_button_1@1.5x.png</filename>
-            <filename>sources/menu_button_1_click@1.5x.png</filename>
-            <filename>sources/menu_button_2@1.5x.png</filename>
-            <filename>sources/menu_button_2_click@1.5x.png</filename>
-            <filename>sources/menu_button_3@1.5x.png</filename>
-            <filename>sources/menu_button_3_click@1.5x.png</filename>
-            <filename>sources/play@1.5x.png</filename>
-            <filename>sources/problembar@1.5x.png</filename>
-            <filename>sources/problembar_chp@1.5x.png</filename>
-            <filename>sources/progbar_0@1.5x.png</filename>
-            <filename>sources/progbar_100@1.5x.png</filename>
-            <filename>sources/ruler@1.5x.png</filename>
-            <filename>sources/scrollbar@1.5x.png</filename>
-            <filename>sources/scrollbar_back@1.5x.png</filename>
-            <filename>sources/smile_1_1@1.5x.png</filename>
-            <filename>sources/smile_1_2@1.5x.png</filename>
-            <filename>sources/smile_1_3@1.5x.png</filename>
-            <filename>sources/smile_2_1@1.5x.png</filename>
-            <filename>sources/smile_2_2@1.5x.png</filename>
-            <filename>sources/smile_2_3@1.5x.png</filename>
-            <filename>sources/smile_3_1@1.5x.png</filename>
-            <filename>sources/smile_3_2@1.5x.png</filename>
-            <filename>sources/smile_3_3@1.5x.png</filename>
-            <filename>sources/smile_4_1@1.5x.png</filename>
-            <filename>sources/smile_4_2@1.5x.png</filename>
+            <filename>sources/logo.png</filename>
+            <filename>sources/menu.png</filename>
+            <filename>sources/menu_button_1.png</filename>
+            <filename>sources/menu_button_1_click.png</filename>
+            <filename>sources/menu_button_2.png</filename>
+            <filename>sources/menu_button_2_click.png</filename>
+            <filename>sources/menu_button_3.png</filename>
+            <filename>sources/menu_button_3_click.png</filename>
+            <filename>sources/play.png</filename>
+            <filename>sources/problembar.png</filename>
+            <filename>sources/problembar_chp.png</filename>
+            <filename>sources/progbar_0.png</filename>
+            <filename>sources/progbar_100.png</filename>
+            <filename>sources/ruler.png</filename>
+            <filename>sources/scrollbar.png</filename>
+            <filename>sources/scrollbar_back.png</filename>
+            <filename>sources/smile_1_1.png</filename>
+            <filename>sources/smile_1_2.png</filename>
+            <filename>sources/smile_1_3.png</filename>
+            <filename>sources/smile_2_1.png</filename>
+            <filename>sources/smile_2_2.png</filename>
+            <filename>sources/smile_2_3.png</filename>
+            <filename>sources/smile_3_1.png</filename>
+            <filename>sources/smile_3_2.png</filename>
+            <filename>sources/smile_3_3.png</filename>
+            <filename>sources/smile_4_1.png</filename>
+            <filename>sources/smile_4_2.png</filename>
+            <filename>sources/Ресурс 48.png</filename>
+            <filename>sources/back_button.png</filename>
+            <filename>sources/back_button_click.png</filename>
+            <filename>sources/bg_app.png</filename>
+            <filename>sources/bg_field.png</filename>
+            <filename>sources/icon_1.png</filename>
+            <filename>sources/icon_1_click.png</filename>
+            <filename>sources/icon_2.png</filename>
+            <filename>sources/icon_2_click.png</filename>
+            <filename>sources/icon_3.png</filename>
+            <filename>sources/icon_3_click.png</filename>
+            <filename>sources/icon_4.png</filename>
+            <filename>sources/icon_4_click.png</filename>
+            <filename>sources/icon_5.png</filename>
+            <filename>sources/icon_5_click.png</filename>
+            <filename>sources/icon_problembar_chp.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

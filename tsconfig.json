@@ -4,7 +4,7 @@
     "target": "es5",
     "allowJs": true,
     "moduleResolution": "classic",
-   // "outFile":"./build/build.js",
+    //"outFile":"./bundle/bundle.js",
     "baseUrl": ".",
     "paths": {
     }
