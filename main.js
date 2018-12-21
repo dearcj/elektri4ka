@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu", "./Stages/Game", "./Neu/Math", "./lib/matter", "./Neu/ResourceManager", "./ClientSettings", "./Neu/BaseObjects/TextBox", "./Neu/BaseObjects/BaseLighting", "./ObjectsList", "./node_modules/pixi-heaven/dist/pixi-heaven.js"], function (require, exports, Application_1, Sound_1, Menu_1, Game_1, Math_1, matter_1, ResourceManager_1, ClientSettings_1, TextBox_1, BaseLighting_1, ObjectsList_1) {
+define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu", "./Stages/Game", "./Neu/Math", "./lib/matter", "./Neu/ResourceManager", "./ClientSettings", "./Neu/BaseObjects/TextBox", "./Neu/BaseObjects/BaseLighting", "./ObjectsList", "./Stages/Rules", "./Stages/Scores", "./node_modules/pixi-heaven/dist/pixi-heaven.js"], function (require, exports, Application_1, Sound_1, Menu_1, Game_1, Math_1, matter_1, ResourceManager_1, ClientSettings_1, TextBox_1, BaseLighting_1, ObjectsList_1, Rules_1, Scores_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.$ = window.$;
@@ -37,6 +37,8 @@ define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu
             var _this = _super.call(this, msw, msh) || this;
             _this.menu = new Menu_1.Menu();
             _this.game = new Game_1.Game();
+            _this.rules = new Rules_1.Rules();
+            _this.scores = new Scores_1.Scores();
             _this.assetsLoaded = 0;
             _this.loadingCounter = 0;
             _this.__DIR = location.pathname.substring(0, location.pathname.lastIndexOf('/') + 1);
@@ -59,6 +61,7 @@ define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu
             var baseH = ClientSettings_1.MAX_SCR_HEIGHT; //MAX_SCR_HEIGHT;
             this.setScreenRes(baseW, baseH);
             _super.prototype.start.call(this);
+            //(<BlackTransition>_.sm.transition).color = 0xffffff;
         };
         ;
         Main.prototype.loadComplete = function () {
@@ -71,7 +74,7 @@ define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu
                 if (_this.globalMouseDown)
                     _this.globalMouseDown(e);
             });
-            exports._.sm.openStage(exports._.game);
+            exports._.sm.openStage(exports._.menu);
         };
         Main.prototype.initPreloader = function () {
             this.preloadBar = new PIXI.Graphics();

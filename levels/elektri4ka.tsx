@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.1" name="elektri4ka" tilewidth="1152" tileheight="1992" tilecount="43" columns="0">
+<tileset version="1.2" tiledversion="1.2.1" name="elektri4ka" tilewidth="1152" tileheight="1992" tilecount="47" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="86">
   <image width="150" height="190" source="../art/sources/back_button.png"/>
@@ -129,5 +129,17 @@
  </tile>
  <tile id="128">
   <image width="100" height="100" source="../art/sources/Ресурс 48.png"/>
+ </tile>
+ <tile id="129">
+  <image width="130" height="190" source="../art/sources/pause.png"/>
+ </tile>
+ <tile id="130">
+  <image width="178" height="178" source="../art/sources/fb.png"/>
+ </tile>
+ <tile id="131">
+  <image width="177" height="177" source="../art/sources/vk.png"/>
+ </tile>
+ <tile id="133">
+  <image width="200" height="70" source="../art/sources/empty.png"/>
  </tile>
 </tileset>

@@ -1,5 +1,17 @@
 import {AngryBar} from "./Objects/AngryBar";
-import {Aligner} from "./Neu/BaseObjects/Aligner";
+import {ButtonTool} from "./Objects/ButtonTool";
+import {Problem} from "./Objects/Problem";
+import {ScrollBox} from "./Objects/ScrollBox";
+import {ToolsBar} from "./Objects/ToolsBar";
+
+export let LevelNames = [
+  "levels/elektri4ka.tsx",
+  "levels/gameui.tmx",
+  "levels/menu.tmx",
+  "levels/rules.tmx",
+  "levels/scores.tmx",
+  "levels/winmodal.tmx",
+];import {Aligner} from "./Neu/BaseObjects/Aligner";
 import {BaseLighting} from "./Neu/BaseObjects/BaseLighting";
 import {BaseParticleSystem} from "./Neu/BaseObjects/BaseParticleSystem";
 import {Button} from "./Neu/BaseObjects/Button";
@@ -16,6 +28,10 @@ import {TrainEffect} from "./Neu/BaseObjects/TrainEffect";
 
 export let ObjectNames = {
   AngryBar :AngryBar,
+  ButtonTool :ButtonTool,
+  Problem :Problem,
+  ScrollBox :ScrollBox,
+  ToolsBar :ToolsBar,
   Aligner :Aligner,
   BaseLighting :BaseLighting,
   BaseParticleSystem :BaseParticleSystem,
@@ -31,7 +47,3 @@ export let ObjectNames = {
   Tooltip :Tooltip,
   TrainEffect :TrainEffect,
 };
-export let LevelNames = [
-  "levels/elektri4ka.tsx",
-  "levels/gameui.tmx",
-];

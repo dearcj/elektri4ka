@@ -3,17 +3,22 @@ import {$, _} from "../main";
 import {Button} from "../Neu/BaseObjects/Button";
 import {TextBox} from "../Neu/BaseObjects/TextBox";
 import {vkpost} from "../Socials";
-
+import {ScrollBox} from "../Objects/ScrollBox";
+import {O} from "../Neu/BaseObjects/O";
 export let API_PHP_FILE = "http://levelgroup.ru/game.php";
-export class Menu extends Stage {
+export class Scores extends Stage {
 
     addLine(inx: number, data: any) {
         if (_.sm.stage != this) return;
-        let tbname = new TextBox([180, 580 + inx * 60]);
+        let tbname = new TextBox([180, 120 + inx * 60]);
         tbname.init({ text: data.name + (data.lastname != "")?(" " + data.lastname):""});
-        let tbscore = new TextBox([570, 580 + inx * 60]);
+        let tbscore = new TextBox([570, 120 + inx * 60]);
         tbscore.init({align: "right", text: data.score.toString()});
+        let scrollbox = _.sm.findByType(ScrollBox)[0];
+        O.rp(tbname.gfx);
+        O.rp(tbscore.gfx);
 
+        scrollbox.masked.addChild(tbname.gfx, tbscore.gfx)
     }
 
     getLeaderboard() {
@@ -22,7 +27,7 @@ export class Menu extends Stage {
                 let d = JSON.parse(data);
                 let inx = 0;
                 for (let x of d) {
-                    if (inx > 10) break;
+                //   if (inx > 10) break;
                     this.addLine(inx, d[inx]);
                     inx++;
                 }///
@@ -31,25 +36,19 @@ export class Menu extends Stage {
 
     onShow() {
         super.onShow();
-        _.lm.load(this, 'menu', null);
-        (<Button>_.sm.findOne("btnplay")).click = ()=>{
-           // vkpost("lalalal");
-            _.sm.openStage(_.game)
-        };
-
-        (<Button>_.sm.findOne("btnrules")).click = ()=>{
-            _.sm.openStage(_.rules)
-        };
-
-        (<Button>_.sm.findOne("btnscore")).click = ()=>{
-            _.sm.openStage(_.scores)
-        };
-
+        _.lm.load(this, 'scores', null);
 
         if ((<any>window).RESULT_MODAL_IN_MENU) {
             _.game.score = 999;
             _.game.ShowResModal();
         }
+
+        (<Button>_.sm.findOne("btnback")).click = ()=>{
+            _.sm.openStage(_.menu)
+        };
+
+        let scrollbox = _.sm.findByType(ScrollBox)[0];
+        scrollbox.maxScroll = 550;
 
        // let g = _.cs("btnton1.png");
        // g.scale.x = 1.5;
@@ -62,6 +61,6 @@ export class Menu extends Stage {
 
         //_.sm.gui2.addChild(btnTON.gfx);
 
-     // /   this.getLeaderboard();
+        this.getLeaderboard();
     }
 }

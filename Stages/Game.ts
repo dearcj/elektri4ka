@@ -7,6 +7,10 @@ import {Button} from "../Neu/BaseObjects/Button";
 import {TextBox} from "../Neu/BaseObjects/TextBox";
 import {ProblemGenerator} from "../ProblemGenerator";
 import {ToolsBar} from "../Objects/ToolsBar";
+import {Linear, TweenMax} from "../Neu/Application";
+import {AngryBar} from "../Objects/AngryBar";
+
+export const LEVEL_TIME = 150.;
 
 type LevelShape = {
     ShapeID: number,
@@ -58,6 +62,47 @@ export let LevelsShapes: Array<Array<LevelShape>> = [
     ]];
 
 export class Game extends Stage {
+    public progressAnim: any;
+    private paused: boolean = false;
+    private pauseTint: PIXI.Sprite;
+    private initProgressW: number;
+
+    pause(mode: boolean) {
+        this.pauseTint = O.rp(this.pauseTint);
+        if (mode) {
+            this.pauseTint = new PIXI.Sprite(PIXI.Texture.WHITE);
+            this.pauseTint.width = SCR_WIDTH;
+            this.pauseTint.height = SCR_HEIGHT;
+            this.pauseTint.alpha = 0.5;
+            (<Button>_.sm.findOne("btnpause")).gfx.alpha = 0;
+            (<Button>_.sm.findOne("btnstart")).gfx.alpha = 1;
+
+            _.sm.gui.addChild(this.pauseTint);
+            this.pauseTint.tint = 0x333344;
+            TweenMax.pauseAll(true, true, true);
+        } else {
+            (<Button>_.sm.findOne("btnpause")).gfx.alpha = 1;
+            (<Button>_.sm.findOne("btnstart")).gfx.alpha = 0;
+
+            TweenMax.resumeAll(true, true, true);
+        }
+        this.paused = mode;
+
+        this.pg.pause(mode);
+    }
+
+    get progress(): number {
+        return this._progress;
+    }
+
+    set progress(value: number) {
+        this._progress = value;
+        let pb = _.sm.findOne("progressbar");
+        pb.gfx.width = this.initProgressW * value;
+        if (value < 0.00001)
+            pb.gfx.scale.x= 0.00001;
+    }
+    private _progress: number;
     get score(): number {
         return this._score;
     }
@@ -67,7 +112,7 @@ export class Game extends Stage {
         let tb = _.sm.findOne("score");
         let scoreStr = value.toString();
         let len = scoreStr.length;
-        let str = ('00000' + scoreStr).slice(-5);
+        let str = ('0000' + scoreStr).slice(-4);
         (<TextBox>tb).text = str;
     }
     whiteSpace: PIXI.Graphics;
@@ -77,7 +122,7 @@ export class Game extends Stage {
     level: number = 3;
     private timeInterval: any;
     public limit: number = 0;
-    public pg;
+    public pg: ProblemGenerator;
     public toolsBar: ToolsBar;
 
     submitScore(s: number, social_id: string, name: string, last_name: string) {
@@ -89,65 +134,51 @@ export class Game extends Stage {
     }
 
     onShow() {
+        this.resModal = null;
         super.onShow();
-        this.toolsBar = new ToolsBar();
+        this.toolsBar = new ToolsBar([0,0], null);
+        this._progress = 0;
+        this.progressAnim = TweenMax.to(this, LEVEL_TIME, {progress: 1, ease: Linear.easeNone,
+            onComplete: ()=>{
+            this.ShowResModal();
+        }});
+
 
         this.pg = new ProblemGenerator();
         _.lm.load(this, 'gameui', null);
-        this.pg.run();
-        this.score = 1231;
-      /*  let btnMenu = _.sm.findOne("menu");
-       (<Button>btnMenu).click = () => {
-            _.sm.openStage(_.menu);
-        };
-        let btnSubmit = _.sm.findOne("btnsubmit");
-        (<Button>btnSubmit).textField.tint = 0x111111;
 
-        let btnReset = _.sm.findOne("btnreset");
-        (<Button>btnReset).click = () => {
-            _.sm.openStage(_.game);
-        };
-
-        O.rp(btnMenu.gfx);
-        _.sm.gui2.addChild(btnMenu.gfx);
-        O.rp(btnReset.gfx);
-        _.sm.gui2.addChild(btnReset.gfx);
-
-        (<Button>btnSubmit).click = () => {
-            if (this.level == 3) {
-                _.game.ShowResModal();
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.pause(true)
             } else {
-                this.level++;
-                _.sm.openStage(_.game);
+                this.pause(false)
             }
+        });
+
+        (<Button>_.sm.findOne("btnstart")).gfx.alpha = 0;
+        (<Button>_.sm.findOne("btnpause")).click = () => {
+            this.pause(!this.paused)
         };
 
-        let lev = _.sm.findOne("lev");
-        (<TextBox>lev).text = this.level.toString();
-        this.secs = 0;
-        this.updateTime();
-        this.timeInterval = _.sm.camera.setInterval(() => {
-            this.secs++;
-            this.updateTime();
-        }, 1);
-        this.limit = 1000;
+        (<Button>_.sm.findOne("btnmenu")).click = () => {
+            _.sm.openStage(_.menu)
+        };
 
-        if (this.level == 1) {
-            this.limit = 11;
-        }
+        (<Button>_.sm.findOne("btnstart")).click = () => {
+            this.pause(!this.paused)
+        };
+        this.pg.run();
+        this.score = 0;
 
-        if (this.level == 2) {
-            this.limit = 18;
-        }
+        let pb = _.sm.findOne("progressbar");
+        this.initProgressW = pb.gfx.width;
 
-        this.whiteSpace= new PIXI.Graphics();
-        this.whiteSpace.x = 0;
-        this.whiteSpace.clear();
-        this.whiteSpace.beginFill(0xffffff,1);
-        this.whiteSpace.drawRect(SCR_WIDTH, 0, 300, SCR_HEIGHT);
-        this.whiteSpace.endFill();
-        _.sm.gui.addChild(this.whiteSpace);
-        // _.game.ShowResModal(); */
+        pb.gfx.anchor.x = 0;
+        pb.x -= pb.width / 2;
+
+        this.pause(false);
+
+        _.sm.findByType(AngryBar)[0].value = 1;
     }
 
     CloseResModal() {
@@ -156,36 +187,38 @@ export class Game extends Stage {
 
     onHide(s: Stage) {
         this.whiteSpace = O.rp(this.whiteSpace);
-        this.timeInterval = _.killTween(this.timeInterval);
+        this.timeInterval = _.killTweens(this.timeInterval);
+        this.progressAnim = _.killTweens(this.progressAnim);
         super.onHide(s);
         this.toolsBar.killNow();
     }
 
     ShowResModal() {
-        this.timeInterval = _.killTween(this.timeInterval);
-        this.resModal = _.lm.load(_.game, 'modal', null);
-        let btnClose = _.sm.findOne("btncancel", this.resModal);
+        if (this.resModal) {
+            return;
+        }
+
+        this.pg.pause(true);
+        TweenMax.pauseAll(true, true, true);
+        this.resModal = _.lm.load(_.game, 'winmodal', null);
         let win = _.sm.findOne("scorewin", this.resModal);
-        let ending = this._score % 10;
-        let xxx = 'клеток';
-        if (ending == 1) xxx = 'клетку';
-        if (ending == 2 || ending == 3 || ending == 4 ) xxx = 'клетки';
-        (<TextBox>win).text = 'в ' + this._score.toString() + ' ' + xxx;
+        (<TextBox>win).text = "Вы набрали " + this.score + " очков";
 
         let vk = <Button>_.sm.findOne("btnvk", this.resModal);
-        let tw = <Button>_.sm.findOne("btntw", this.resModal);
-        let ok = <Button>_.sm.findOne("btnok", this.resModal);
         let fb = <Button>_.sm.findOne("btnfb", this.resModal);
+        let retry = <Button>_.sm.findOne("btnretry", this.resModal);
+        retry.click=() => {
+          _.sm.openStage(this);
+        };
         vk.click = () => {
-            vkpost(`Упакуй меня, если сможешь!
-Эта математическая игра будет покруче 2048`);
+            vkpost(``);
         };
 
         fb.click = () => {
             fbpost();
         };
 
-        let g = _.cs("btnton1.png");
+/*        let g = _.cs("btnton1.png");
         g.scale.x = 1.5;
         g.scale.y = 1.5;
         let btnTON = new Button(_.sm.findOne("btntonpos").pos, g);
@@ -194,7 +227,7 @@ export class Game extends Stage {
             window.open((<any>window).LINK_TO_SOCIAL);
         };
 
-        _.sm.gui2.addChild(btnTON.gfx);
+        _.sm.gui2.addChild(btnTON.gfx);*/
     }
 
     SetScore(x: number) {

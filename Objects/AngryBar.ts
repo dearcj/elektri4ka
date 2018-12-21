@@ -10,7 +10,11 @@ export class AngryBar extends O {
 
     set value(value: number) {
         this._value = value;
-        this.update()
+        this.update();
+
+        if (this._value < 0) {
+            _.game.ShowResModal();
+        }
     }
 
     private _value: number = 0;
@@ -18,7 +22,7 @@ export class AngryBar extends O {
     constructor (pos: Vec2 = null, gfx: PIXI.DisplayObject = null) {
         super(pos, null);
         this.gfx = _.cc(_.sm.gui);
-        this.value = 0;
+        this.value = 1;
 
         this.smiles.push(_.cs("smile_4_1", this.gfx));
         this.smiles.push(_.cs("smile_3_1", this.gfx));
@@ -31,7 +35,6 @@ export class AngryBar extends O {
             x.x =  inx * 80;
             inx ++;
         }
-        TweenMax.to(this, 10, {value: 1, yoyo: true, repeat: -1})
     }
 
     init(p: any) {

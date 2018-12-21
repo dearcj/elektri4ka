@@ -14,6 +14,9 @@ import {
 import {TextBox} from "./Neu/BaseObjects/TextBox";
 import {BaseLighting} from "./Neu/BaseObjects/BaseLighting";
 import {LevelNames} from "./ObjectsList";
+import {Rules} from "./Stages/Rules";
+import {Scores} from "./Stages/Scores";
+import {BlackTransition} from "./Neu/Transitions/BlackTransition";
 export let $: any = (<any>window).$;
 export type PIXIContainer = any;
 
@@ -48,6 +51,8 @@ export class Main extends Application {
 
     public menu: Menu = new Menu();
     public game: Game = new Game();
+    public rules: Rules = new Rules();
+    public scores: Scores = new Scores();
 
 
     private loadTime: number;
@@ -81,9 +86,9 @@ export class Main extends Application {
         console.log("Device pixel ratio: ", window.devicePixelRatio);
         let baseW = MAX_SCR_WIDTH;//MAX_SCR_WIDTH;
         let baseH = MAX_SCR_HEIGHT;//MAX_SCR_HEIGHT;
-
         this.setScreenRes(baseW, baseH);
         super.start();
+        //(<BlackTransition>_.sm.transition).color = 0xffffff;
     };
 
     loadComplete(): void {
@@ -97,7 +102,7 @@ export class Main extends Application {
             if (this.globalMouseDown) this.globalMouseDown(e)
         });
 
-            _.sm.openStage(_.game);
+        _.sm.openStage(_.menu);
     }
 
     initPreloader() {

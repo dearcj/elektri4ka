@@ -30,9 +30,16 @@ export class ToolsBar extends O {
     }
 
     dragEnd(btn: ButtonTool, e: any) {
+        let pos = e.data.getLocalPosition(btn.gfx.parent);
+        let res = _.game.pg.tryDropSolution(btn, [pos.x, pos.y]);
+
+        if (!res) {
+            btn.killNow();
+        }
         btn.gfx.dragging  = false;
-        btn.killNow();
+
     }
+
 
     dragStart(btn: ButtonTool, e: any) {
         btn.gfx.dragging  = true;
@@ -56,7 +63,11 @@ export class ToolsBar extends O {
         button.gfx.
         on('mousedown', this.dragStart.bind(this, button)).
         on('mousemove', this.dragMove.bind(this, button)).
-        on('mouseup', this.dragEnd.bind(this, button));
+        on('mouseup', this.dragEnd.bind(this, button)).
+        on('touchstart', this.dragStart.bind(this, button)).
+        on('touchmove', this.dragMove.bind(this, button)).
+        on('touchend', this.dragEnd.bind(this, button));
+
         let x = new TextBox(m.v2cp(button.pos));
         x.y += 100;
         x.init({fontscale: 0.4, align: "center"});

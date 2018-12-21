@@ -11,9 +11,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "../Neu/Stage", "../main", "../Neu/BaseObjects/O", "../Socials", "./Menu", "../Neu/BaseObjects/Button", "../ProblemGenerator", "../Objects/ToolsBar"], function (require, exports, Stage_1, main_1, O_1, Socials_1, Menu_1, Button_1, ProblemGenerator_1, ToolsBar_1) {
+define(["require", "exports", "../Neu/Stage", "../main", "../Neu/BaseObjects/O", "../Socials", "./Menu", "../ProblemGenerator", "../Objects/ToolsBar", "../Neu/Application", "../Objects/AngryBar"], function (require, exports, Stage_1, main_1, O_1, Socials_1, Menu_1, ProblemGenerator_1, ToolsBar_1, Application_1, AngryBar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.LEVEL_TIME = 150.;
     exports.LevelsShapes = [
         [
             {
@@ -62,12 +63,48 @@ define(["require", "exports", "../Neu/Stage", "../main", "../Neu/BaseObjects/O",
         __extends(Game, _super);
         function Game() {
             var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.paused = false;
             _this._score = 0;
             _this.secs = 0;
             _this.level = 3;
             _this.limit = 0;
             return _this;
         }
+        Game.prototype.pause = function (mode) {
+            this.pauseTint = O_1.O.rp(this.pauseTint);
+            if (mode) {
+                this.pauseTint = new PIXI.Sprite(PIXI.Texture.WHITE);
+                this.pauseTint.width = main_1.SCR_WIDTH;
+                this.pauseTint.height = main_1.SCR_HEIGHT;
+                this.pauseTint.alpha = 0.5;
+                main_1._.sm.findOne("btnpause").gfx.alpha = 0;
+                main_1._.sm.findOne("btnstart").gfx.alpha = 1;
+                main_1._.sm.gui.addChild(this.pauseTint);
+                this.pauseTint.tint = 0x333344;
+                Application_1.TweenMax.pauseAll(true, true, true);
+            }
+            else {
+                main_1._.sm.findOne("btnpause").gfx.alpha = 1;
+                main_1._.sm.findOne("btnstart").gfx.alpha = 0;
+                Application_1.TweenMax.resumeAll(true, true, true);
+            }
+            this.paused = mode;
+            this.pg.pause(mode);
+        };
+        Object.defineProperty(Game.prototype, "progress", {
+            get: function () {
+                return this._progress;
+            },
+            set: function (value) {
+                this._progress = value;
+                var pb = main_1._.sm.findOne("progressbar");
+                pb.gfx.width = this.initProgressW * value;
+                if (value < 0.00001)
+                    pb.gfx.scale.x = 0.00001;
+            },
+            enumerable: true,
+            configurable: true
+        });
         Object.defineProperty(Game.prototype, "score", {
             get: function () {
                 return this._score;
@@ -77,7 +114,7 @@ define(["require", "exports", "../Neu/Stage", "../main", "../Neu/BaseObjects/O",
                 var tb = main_1._.sm.findOne("score");
                 var scoreStr = value.toString();
                 var len = scoreStr.length;
-                var str = ('00000' + scoreStr).slice(-5);
+                var str = ('0000' + scoreStr).slice(-4);
                 tb.text = str;
             },
             enumerable: true,
@@ -91,105 +128,86 @@ define(["require", "exports", "../Neu/Stage", "../main", "../Neu/BaseObjects/O",
             });
         };
         Game.prototype.onShow = function () {
+            var _this = this;
+            this.resModal = null;
             _super.prototype.onShow.call(this);
-            this.toolsBar = new ToolsBar_1.ToolsBar();
+            this.toolsBar = new ToolsBar_1.ToolsBar([0, 0], null);
+            this._progress = 0;
+            this.progressAnim = Application_1.TweenMax.to(this, exports.LEVEL_TIME, { progress: 1, ease: Application_1.Linear.easeNone,
+                onComplete: function () {
+                    _this.ShowResModal();
+                } });
             this.pg = new ProblemGenerator_1.ProblemGenerator();
             main_1._.lm.load(this, 'gameui', null);
+            document.addEventListener('visibilitychange', function () {
+                if (document.hidden) {
+                    _this.pause(true);
+                }
+                else {
+                    _this.pause(false);
+                }
+            });
+            main_1._.sm.findOne("btnstart").gfx.alpha = 0;
+            main_1._.sm.findOne("btnpause").click = function () {
+                _this.pause(!_this.paused);
+            };
+            main_1._.sm.findOne("btnmenu").click = function () {
+                main_1._.sm.openStage(main_1._.menu);
+            };
+            main_1._.sm.findOne("btnstart").click = function () {
+                _this.pause(!_this.paused);
+            };
             this.pg.run();
-            this.score = 1231;
-            /*  let btnMenu = _.sm.findOne("menu");
-             (<Button>btnMenu).click = () => {
-                  _.sm.openStage(_.menu);
-              };
-              let btnSubmit = _.sm.findOne("btnsubmit");
-              (<Button>btnSubmit).textField.tint = 0x111111;
-      
-              let btnReset = _.sm.findOne("btnreset");
-              (<Button>btnReset).click = () => {
-                  _.sm.openStage(_.game);
-              };
-      
-              O.rp(btnMenu.gfx);
-              _.sm.gui2.addChild(btnMenu.gfx);
-              O.rp(btnReset.gfx);
-              _.sm.gui2.addChild(btnReset.gfx);
-      
-              (<Button>btnSubmit).click = () => {
-                  if (this.level == 3) {
-                      _.game.ShowResModal();
-                  } else {
-                      this.level++;
-                      _.sm.openStage(_.game);
-                  }
-              };
-      
-              let lev = _.sm.findOne("lev");
-              (<TextBox>lev).text = this.level.toString();
-              this.secs = 0;
-              this.updateTime();
-              this.timeInterval = _.sm.camera.setInterval(() => {
-                  this.secs++;
-                  this.updateTime();
-              }, 1);
-              this.limit = 1000;
-      
-              if (this.level == 1) {
-                  this.limit = 11;
-              }
-      
-              if (this.level == 2) {
-                  this.limit = 18;
-              }
-      
-              this.whiteSpace= new PIXI.Graphics();
-              this.whiteSpace.x = 0;
-              this.whiteSpace.clear();
-              this.whiteSpace.beginFill(0xffffff,1);
-              this.whiteSpace.drawRect(SCR_WIDTH, 0, 300, SCR_HEIGHT);
-              this.whiteSpace.endFill();
-              _.sm.gui.addChild(this.whiteSpace);
-              // _.game.ShowResModal(); */
+            this.score = 0;
+            var pb = main_1._.sm.findOne("progressbar");
+            this.initProgressW = pb.gfx.width;
+            pb.gfx.anchor.x = 0;
+            pb.x -= pb.width / 2;
+            this.pause(false);
+            main_1._.sm.findByType(AngryBar_1.AngryBar)[0].value = 1;
         };
         Game.prototype.CloseResModal = function () {
             main_1._.sm.removeList(this.resModal);
         };
         Game.prototype.onHide = function (s) {
             this.whiteSpace = O_1.O.rp(this.whiteSpace);
-            this.timeInterval = main_1._.killTween(this.timeInterval);
+            this.timeInterval = main_1._.killTweens(this.timeInterval);
+            this.progressAnim = main_1._.killTweens(this.progressAnim);
             _super.prototype.onHide.call(this, s);
             this.toolsBar.killNow();
         };
         Game.prototype.ShowResModal = function () {
-            this.timeInterval = main_1._.killTween(this.timeInterval);
-            this.resModal = main_1._.lm.load(main_1._.game, 'modal', null);
-            var btnClose = main_1._.sm.findOne("btncancel", this.resModal);
+            var _this = this;
+            if (this.resModal) {
+                return;
+            }
+            this.pg.pause(true);
+            Application_1.TweenMax.pauseAll(true, true, true);
+            this.resModal = main_1._.lm.load(main_1._.game, 'winmodal', null);
             var win = main_1._.sm.findOne("scorewin", this.resModal);
-            var ending = this._score % 10;
-            var xxx = 'клеток';
-            if (ending == 1)
-                xxx = 'клетку';
-            if (ending == 2 || ending == 3 || ending == 4)
-                xxx = 'клетки';
-            win.text = 'в ' + this._score.toString() + ' ' + xxx;
+            win.text = "Вы набрали " + this.score + " очков";
             var vk = main_1._.sm.findOne("btnvk", this.resModal);
-            var tw = main_1._.sm.findOne("btntw", this.resModal);
-            var ok = main_1._.sm.findOne("btnok", this.resModal);
             var fb = main_1._.sm.findOne("btnfb", this.resModal);
+            var retry = main_1._.sm.findOne("btnretry", this.resModal);
+            retry.click = function () {
+                main_1._.sm.openStage(_this);
+            };
             vk.click = function () {
-                Socials_1.vkpost("\u0423\u043F\u0430\u043A\u0443\u0439 \u043C\u0435\u043D\u044F, \u0435\u0441\u043B\u0438 \u0441\u043C\u043E\u0436\u0435\u0448\u044C!\n\u042D\u0442\u0430 \u043C\u0430\u0442\u0435\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0430\u044F \u0438\u0433\u0440\u0430 \u0431\u0443\u0434\u0435\u0442 \u043F\u043E\u043A\u0440\u0443\u0447\u0435 2048");
+                Socials_1.vkpost("");
             };
             fb.click = function () {
                 Socials_1.fbpost();
             };
-            var g = main_1._.cs("btnton1.png");
-            g.scale.x = 1.5;
-            g.scale.y = 1.5;
-            var btnTON = new Button_1.Button(main_1._.sm.findOne("btntonpos").pos, g);
-            btnTON.init({ text: "N+1", fontscale: 0.7, });
-            btnTON.click = function () {
-                window.open(window.LINK_TO_SOCIAL);
-            };
-            main_1._.sm.gui2.addChild(btnTON.gfx);
+            /*        let g = _.cs("btnton1.png");
+                    g.scale.x = 1.5;
+                    g.scale.y = 1.5;
+                    let btnTON = new Button(_.sm.findOne("btntonpos").pos, g);
+                    btnTON.init({text:"N+1", fontscale: 0.7,});
+                    (<Button>btnTON).click = () => {
+                        window.open((<any>window).LINK_TO_SOCIAL);
+                    };
+            
+                    _.sm.gui2.addChild(btnTON.gfx);*/
         };
         Game.prototype.SetScore = function (x) {
             this._score = x;
