@@ -8,6 +8,7 @@ import {O} from "../Neu/BaseObjects/O";
 
 
 export class Rules extends Stage {
+    withPlay: boolean = false;
 
     addLine(inx: number, data: any) {
         if (_.sm.stage != this) return;
@@ -22,26 +23,32 @@ export class Rules extends Stage {
         super.onShow();
         _.lm.load(this, 'rules', null);
 
-        if ((<any>window).RESULT_MODAL_IN_MENU) {
-            _.game.score = 999;
-            _.game.ShowResModal();
-        }
-
 
         (<Button>_.sm.findOne("btnback")).click = ()=>{
             _.sm.openStage(_.menu)
         };
 
         let scrollbox = _.sm.findByType(ScrollBox)[0];
-        let c = this.layers["scrollbox"].children;
-        console.log(c);
 
         let m = _.sm.findMultiple("toscrollbox");
 
         for (let x of m) {
             O.rp(x.gfx);
-
             scrollbox.masked.addChild(x.gfx);
         }
+
+        let btnplay = _.sm.findOne("btnplay");
+        if (this.withPlay) {
+            O.rp(btnplay.gfx);
+            scrollbox.masked.addChild(btnplay.gfx);
+            (<Button>btnplay).click = () => {
+                _.sm.openStage(_.game);
+            };
+            (<Button>_.sm.findOne("btnback")).killNow();
+        } else {
+            btnplay.killNow();
+        }
+
+
     }
 }

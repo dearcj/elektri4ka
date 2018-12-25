@@ -48,9 +48,11 @@ define(["require", "exports", "../Neu/Stage", "../main", "../Neu/BaseObjects/Tex
             main_1._.lm.load(this, 'menu', null);
             main_1._.sm.findOne("btnplay").click = function () {
                 // vkpost("lalalal");
-                main_1._.sm.openStage(main_1._.game);
+                main_1._.rules.withPlay = true;
+                main_1._.sm.openStage(main_1._.rules);
             };
             main_1._.sm.findOne("btnrules").click = function () {
+                main_1._.rules.withPlay = false;
                 main_1._.sm.openStage(main_1._.rules);
             };
             main_1._.sm.findOne("btnscore").click = function () {

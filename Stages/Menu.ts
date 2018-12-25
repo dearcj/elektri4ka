@@ -34,10 +34,12 @@ export class Menu extends Stage {
         _.lm.load(this, 'menu', null);
         (<Button>_.sm.findOne("btnplay")).click = ()=>{
            // vkpost("lalalal");
-            _.sm.openStage(_.game)
+            _.rules.withPlay = true;
+            _.sm.openStage(_.rules);
         };
 
         (<Button>_.sm.findOne("btnrules")).click = ()=>{
+            _.rules.withPlay = false;
             _.sm.openStage(_.rules)
         };
 

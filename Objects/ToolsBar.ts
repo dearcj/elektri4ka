@@ -44,12 +44,16 @@ export class ToolsBar extends O {
     dragStart(btn: ButtonTool, e: any) {
         btn.gfx.dragging  = true;
         let inx = this.tools.indexOf(btn);
-
         let b =  this.createToolBtn(btn.solution, inx);
 
         this.tools[inx] = b;
 
         btn.gfx.parent.setChildIndex(btn.gfx, btn.gfx.parent.children.length - 1);
+
+        setTimeout(()=>{
+            btn.gfx.tint = 0xffffff;
+        }, 0);
+        btn.gfx.tint = 0xffffff;
     }
 
     public createToolBtn(sol: SolutionType, inx: number):ButtonTool {

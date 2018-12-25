@@ -5,6 +5,7 @@ import {ProblemType} from "../ProblemGenerator";
 import {TextBox} from "../Neu/BaseObjects/TextBox";
 import {HeavenBitmapText} from "../Neu/PIXIPlugins/HeavenBitmapText";
 import {ButtonTool} from "./ButtonTool";
+import {TweenMax} from "../Neu/Application";
 const CellHeight: number = 78;
 
 export class Problem extends O {
@@ -16,6 +17,14 @@ export class Problem extends O {
     private textField: HeavenBitmapText;
     toolsSolved: ButtonTool[]= [];
     line: number = 0;
+    private textField2: HeavenBitmapText;
+
+    solveAnimation() {
+        TweenMax.to(this.gfx, 2.4, {alpha: 0.});
+        for (let x of this.toolsSolved) {
+            TweenMax.to(x.gfx, 2.1, {alpha: 0.});
+        }
+    }
 
     onDestroy() {
         super.onDestroy();
@@ -33,14 +42,17 @@ export class Problem extends O {
 
             this.toolsSolved.push(s);
 
-            s.gfx.alpha = .8;
+            s.gfx.alpha = 1;
             s.gfx.interactive= false;
             s.gfx.y = this.y + 6 + s.gfx.height / 4;
-            s.gfx.scale.set(0.5);
+            s.gfx.width = 80;
+            s.gfx.height = 80;
             this.alignTools();
 
             return true;
         } else {
+            this.wrongSolutionAnim();
+
             return false;
         }
     }
@@ -68,10 +80,21 @@ export class Problem extends O {
         this.problemType = problemType;
         this.gfx = _.cc(
         this.gfxBrick = new PIXI.Sprite(PIXI.Texture.WHITE);
-        this.textField = TextBox.createTextField({}, {fontscale: 0.5, align: "left", text: problemType.text});
+        let lines = problemType.text.split("\n");
+
+        this.textField = TextBox.createTextField({}, {fontscale: 0.5, align: "left", text: lines[0]});
         this.textField.x = 14 + this.textField.width / 2;
-        this.textField.y = -14;
+        this.textField.y = 12 + -14;
         this.textField.tint = 0x111111;
+
+
+        if (lines.length > 1) {
+            this.textField2 = TextBox.createTextField({}, {fontscale: 0.5, align: "left", text: lines[1]});
+            this.textField2.x = 14 + this.textField2.width / 2;
+            this.textField2.y = 12 + 10;
+            this.textField2.tint = 0x111111;
+        }
+
         this.gfx.addChild(this.gfxBrick);
 
         if (problemType.type == 0) {
@@ -82,6 +105,9 @@ export class Problem extends O {
             this.gfxBrick.tint = 0xff601a;
         }
         this.gfx.addChild(this.textField);
+
+        if (this.textField2)
+        this.gfx.addChild(this.textField2);
 
         this.gfxBrick.height = CellHeight;
         this.gfxBrick.width = 20;
@@ -94,5 +120,11 @@ export class Problem extends O {
             x.gfx.x = this.gfx.x + w - 80*inx - x.gfx.width / 2;
             inx--;
         }
+    }
+
+    private wrongSolutionAnim() {
+        TweenMax.to(this, 0.05, {y: this.y - 2, yoyo: true, repeat: 5});
+        TweenMax.to(this.gfx, 0.05, {alpha: 0.8, yoyo: true, repeat: 5});
+        //TweenMax.to(this.gfx.scale, 0.05, {x: 0.97, y: 0.97, yoyo: true, repeat: 5});
     }
 }

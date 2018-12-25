@@ -8,7 +8,7 @@ declare let twttr: any;
 declare let TW_CONSUMER_KEY: any;
 
 export function vkpost(text: string) {
-
+    console.log("post vk");
 
     function authInfo(response) {
         _.game.submitScore(_.game.score, 'VK:' + response.session.mid,  response.session.user.first_name, response.session.user.last_name);
@@ -16,7 +16,6 @@ export function vkpost(text: string) {
         if (response.session) {
             VK.api('wall.post', {
                 message: text,
-                attachments: [(<any>window).VK_PHOTO_LINK ]
             },function(data) {
                 console.log(JSON.stringify(data));
 

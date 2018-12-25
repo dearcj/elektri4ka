@@ -138,6 +138,13 @@ export class Game extends Stage {
         super.onShow();
         this.toolsBar = new ToolsBar([0,0], null);
         this._progress = 0;
+
+
+        if ((<any>window).RESULT_MODAL_IN_MENU) {
+            _.game.score = 999;
+            _.game.ShowResModal();
+        }
+
         this.progressAnim = TweenMax.to(this, LEVEL_TIME, {progress: 1, ease: Linear.easeNone,
             onComplete: ()=>{
             this.ShowResModal();
@@ -238,8 +245,9 @@ export class Game extends Stage {
     }
 
     private AddZeroes(x: number): string {
-        if (x < 10) return '00' + x.toString();
-        if (x < 100) return '0' + x.toString();
+        if (x < 10) return '0000' + x.toString(); else
+        if (x < 100) return '000' + x.toString(); else
+        if (x < 1000) return '00' + x.toString();
         return x.toString();
     }
 

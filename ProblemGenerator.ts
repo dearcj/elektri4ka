@@ -214,6 +214,10 @@ export class ProblemGenerator extends O {
     private diffTween: gsap.Animation;
     private paused: boolean = false;
 
+    wrongAnimation(g: any) {
+
+    }
+
     clear() {
         _.sm.removeList(this.problems);
         _.killTweens(this.anim);
@@ -316,6 +320,7 @@ export class ProblemGenerator extends O {
 
     private solveProblem(problem: Problem) {
         problem.solved = true;
+        problem.solveAnimation();
         problem.gfxBrick.width = SCR_WIDTH - problem.gfx.x + 3;
 
         let inx = 0;
@@ -336,7 +341,7 @@ export class ProblemGenerator extends O {
             if (x) {
                 let rect = x.gfx.getBounds(true);
                 rect.pad(20, 20);
-                if (rect.contains(pos[0], pos[1])) {
+                if (rect.contains(pos[0]*_.appScale, pos[1]*_.appScale)) {
                     res = inx;
                     break;
                 }

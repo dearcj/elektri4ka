@@ -1,5 +1,5 @@
 import './node_modules/pixi-heaven/dist/pixi-heaven.js';
-import {Application} from "./Neu/Application";
+import {Application, PIXI, TweenLite, TweenMax} from "./Neu/Application";
 import {Sound} from "./Neu/Sound";
 import {Menu} from "./Stages/Menu";
 import {Game} from "./Stages/Game";
@@ -17,6 +17,9 @@ import {LevelNames} from "./ObjectsList";
 import {Rules} from "./Stages/Rules";
 import {Scores} from "./Stages/Scores";
 import {BlackTransition} from "./Neu/Transitions/BlackTransition";
+import {Controls} from "./Neu/Controls";
+import {SM} from "./Neu/SM";
+import {Loader} from "./Neu/Loader";
 export let $: any = (<any>window).$;
 export type PIXIContainer = any;
 
@@ -83,11 +86,66 @@ export class Main extends Application {
     start() {
         this.addStats = false;
 
+        this.SCR_WIDTH = SCR_WIDTH;
+        this.SCR_HEIGHT = SCR_HEIGHT;
         console.log("Device pixel ratio: ", window.devicePixelRatio);
-        let baseW = MAX_SCR_WIDTH;//MAX_SCR_WIDTH;
-        let baseH = MAX_SCR_HEIGHT;//MAX_SCR_HEIGHT;
-        this.setScreenRes(baseW, baseH);
-        super.start();
+        let resize = () => {
+            this.appScale = ((window.innerHeight) / this.SCR_HEIGHT) / window.devicePixelRatio;
+            let neww = window.innerHeight * (this.SCR_WIDTH / this.SCR_HEIGHT);
+            this.app.renderer.resize(Math.min(window.innerWidth, neww) / window.devicePixelRatio, window.innerHeight / window.devicePixelRatio);
+            this.app.stage.scale.set(this.appScale, this.appScale);
+        };
+        window.addEventListener('resize', resize);
+
+        setTimeout(()=>{
+            resize();
+        }, 200);
+        setTimeout(()=>{
+            resize();
+        }, 0);
+        this.screenCenterOffset = [0,0];
+        this.SCR_WIDTH_HALF = this.SCR_WIDTH * .5;
+        this.SCR_HEIGHT_HALF = this.SCR_HEIGHT * .5;
+
+        this.engine = Engine.create();
+        //TweenMax.lagSmoothing(0);
+        TweenLite.ticker.useRAF(true);
+
+        document.addEventListener('contextmenu', (event) => {
+            if (this.onContext) this.onContext();
+            event.preventDefault()
+        });
+
+        this.controls = new Controls();
+        this.PIXI = PIXI;
+
+        this.resolution = window.devicePixelRatio;
+        this.app = new PIXI.Application(this.SCR_WIDTH, this.SCR_HEIGHT, {
+            autoStart: false,
+            clearBeforeRender: true,
+            resolution: this.resolution, antialias: false,
+            preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xffffff,
+        });
+
+        document.body.appendChild(this.app.view);
+        this.app.stage = new PIXI.display.Stage();
+        this.sm = new SM();
+        this.sm.init();
+        this.lm = new Loader();
+        this.sm.createCamera();
+        this.lastLoop = (new Date()).getTime();
+        this.lastNetworkPing = this.lastLoop;
+
+        let bindedProcess = this.process.bind(this);
+        TweenMax.ticker.addEventListener("tick", bindedProcess);
+
+        this.app.ticker.add(this.animate, this, PIXI.UPDATE_PRIORITY.HIGH);
+        this.app.ticker.start();
+
+
+        resize();
+
+
         //(<BlackTransition>_.sm.transition).color = 0xffffff;
     };
 

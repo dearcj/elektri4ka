@@ -5,7 +5,6 @@ import {TextBox} from "../Neu/BaseObjects/TextBox";
 import {vkpost} from "../Socials";
 import {ScrollBox} from "../Objects/ScrollBox";
 import {O} from "../Neu/BaseObjects/O";
-export let API_PHP_FILE = "http://levelgroup.ru/game.php";
 export class Scores extends Stage {
 
     addLine(inx: number, data: any) {
@@ -22,7 +21,7 @@ export class Scores extends Stage {
     }
 
     getLeaderboard() {
-        $.post( API_PHP_FILE, { func: "leaderboard" })
+        $.post( (<any>window).API_PHP_FILE, { func: "leaderboard" })
             .done(( data ) => {
                 let d = JSON.parse(data);
                 let inx = 0;

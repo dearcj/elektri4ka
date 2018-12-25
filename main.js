@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu", "./Stages/Game", "./Neu/Math", "./lib/matter", "./Neu/ResourceManager", "./ClientSettings", "./Neu/BaseObjects/TextBox", "./Neu/BaseObjects/BaseLighting", "./ObjectsList", "./Stages/Rules", "./Stages/Scores", "./node_modules/pixi-heaven/dist/pixi-heaven.js"], function (require, exports, Application_1, Sound_1, Menu_1, Game_1, Math_1, matter_1, ResourceManager_1, ClientSettings_1, TextBox_1, BaseLighting_1, ObjectsList_1, Rules_1, Scores_1) {
+define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu", "./Stages/Game", "./Neu/Math", "./lib/matter", "./Neu/ResourceManager", "./ClientSettings", "./Neu/BaseObjects/TextBox", "./Neu/BaseObjects/BaseLighting", "./ObjectsList", "./Stages/Rules", "./Stages/Scores", "./Neu/Controls", "./Neu/SM", "./Neu/Loader", "./node_modules/pixi-heaven/dist/pixi-heaven.js"], function (require, exports, Application_1, Sound_1, Menu_1, Game_1, Math_1, matter_1, ResourceManager_1, ClientSettings_1, TextBox_1, BaseLighting_1, ObjectsList_1, Rules_1, Scores_1, Controls_1, SM_1, Loader_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.$ = window.$;
@@ -30,7 +30,7 @@ define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu
         ///////////////////////////////////////////
         'fonts/main-export.xml',
     ];
-    exports.PIXIUI = PIXI.UI;
+    exports.PIXIUI = Application_1.PIXI.UI;
     var Main = /** @class */ (function (_super) {
         __extends(Main, _super);
         function Main(msw, msh) {
@@ -55,12 +55,57 @@ define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu
             xmlHttp.send(null);
         };
         Main.prototype.start = function () {
+            var _this = this;
             this.addStats = false;
+            this.SCR_WIDTH = exports.SCR_WIDTH;
+            this.SCR_HEIGHT = exports.SCR_HEIGHT;
             console.log("Device pixel ratio: ", window.devicePixelRatio);
-            var baseW = ClientSettings_1.MAX_SCR_WIDTH; //MAX_SCR_WIDTH;
-            var baseH = ClientSettings_1.MAX_SCR_HEIGHT; //MAX_SCR_HEIGHT;
-            this.setScreenRes(baseW, baseH);
-            _super.prototype.start.call(this);
+            var resize = function () {
+                _this.appScale = ((window.innerHeight) / _this.SCR_HEIGHT) / window.devicePixelRatio;
+                var neww = window.innerHeight * (_this.SCR_WIDTH / _this.SCR_HEIGHT);
+                _this.app.renderer.resize(Math.min(window.innerWidth, neww) / window.devicePixelRatio, window.innerHeight / window.devicePixelRatio);
+                _this.app.stage.scale.set(_this.appScale, _this.appScale);
+            };
+            window.addEventListener('resize', resize);
+            setTimeout(function () {
+                resize();
+            }, 200);
+            setTimeout(function () {
+                resize();
+            }, 0);
+            this.screenCenterOffset = [0, 0];
+            this.SCR_WIDTH_HALF = this.SCR_WIDTH * .5;
+            this.SCR_HEIGHT_HALF = this.SCR_HEIGHT * .5;
+            this.engine = matter_1.Engine.create();
+            //TweenMax.lagSmoothing(0);
+            Application_1.TweenLite.ticker.useRAF(true);
+            document.addEventListener('contextmenu', function (event) {
+                if (_this.onContext)
+                    _this.onContext();
+                event.preventDefault();
+            });
+            this.controls = new Controls_1.Controls();
+            this.PIXI = Application_1.PIXI;
+            this.resolution = window.devicePixelRatio;
+            this.app = new Application_1.PIXI.Application(this.SCR_WIDTH, this.SCR_HEIGHT, {
+                autoStart: false,
+                clearBeforeRender: true,
+                resolution: this.resolution, antialias: false,
+                preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xffffff,
+            });
+            document.body.appendChild(this.app.view);
+            this.app.stage = new Application_1.PIXI.display.Stage();
+            this.sm = new SM_1.SM();
+            this.sm.init();
+            this.lm = new Loader_1.Loader();
+            this.sm.createCamera();
+            this.lastLoop = (new Date()).getTime();
+            this.lastNetworkPing = this.lastLoop;
+            var bindedProcess = this.process.bind(this);
+            Application_1.TweenMax.ticker.addEventListener("tick", bindedProcess);
+            this.app.ticker.add(this.animate, this, Application_1.PIXI.UPDATE_PRIORITY.HIGH);
+            this.app.ticker.start();
+            resize();
             //(<BlackTransition>_.sm.transition).color = 0xffffff;
         };
         ;
@@ -77,7 +122,7 @@ define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu
             exports._.sm.openStage(exports._.menu);
         };
         Main.prototype.initPreloader = function () {
-            this.preloadBar = new PIXI.Graphics();
+            this.preloadBar = new Application_1.PIXI.Graphics();
             this.app.stage.addChild(this.preloadBar);
             var borderWidth = 3;
             this.preloadBar.beginFill(0x100110);

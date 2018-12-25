@@ -5,6 +5,8 @@ export class ScrollBox extends O {
     private scrolling: boolean = false;
     private bindedWheel: any;
     public  masked: PIXI.Container;
+    private starty: number;
+    private prev: number;
     get maskHeight(): number {
         return this._maskHeight;
     }
@@ -26,7 +28,7 @@ export class ScrollBox extends O {
     private _maskHeight: number = 100;
     container: PIXI.Container;
     private mask: PIXI.Graphics;
-    public maxScroll: number = 700;
+    public maxScroll: number = 1500;
 
 process() {
     super.process();
@@ -62,11 +64,12 @@ process() {
         this.gfx.buttonMode = true;
         this.gfx.interactive = true;
         this.gfx.on('mousedown', this.scrollstart.bind(this)).
-        on('touchstart', this.scrollstart.bind(this)).
+        on('touchstart', this.touchstart.bind(this)).
         on('mouseup', this.scrollend.bind(this)).
         on('mouseupoutside', this.scrollend.bind(this)).
         on('touchendoutside', this.scrollend.bind(this)).
-        on('touchend', this.scrollend.bind(this));
+        on('touchmove', this.touchmove.bind(this)).
+        on('touchend', this.touchend.bind(this));
 
         this.bindedWheel = this.onWheel.bind(this);
         document.addEventListener("mousewheel", this.bindedWheel, false);
@@ -81,6 +84,26 @@ process() {
     onWheel(e) {
         this.scrollDown(e.wheelDeltaY / 2);
     }
+
+    touchstart(e) {
+        this.starty = e.data.originalEvent.touches[0].clientY;
+        this.prev = null;
+        //this.scrolling = false;
+    }
+
+    touchend() {
+        //this.scrolling = false;
+    }
+
+    touchmove(e) {
+        let delta = (this.prev ? this.prev : this.starty) - e.data.originalEvent.changedTouches[0].clientY;
+
+        this.scrollDown(-delta);
+
+        this.prev = e.data.originalEvent.changedTouches[0].clientY;
+    }
+
+
 
     scrollend() {
         this.scrolling = false;

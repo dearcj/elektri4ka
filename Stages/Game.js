@@ -133,6 +133,10 @@ define(["require", "exports", "../Neu/Stage", "../main", "../Neu/BaseObjects/O",
             _super.prototype.onShow.call(this);
             this.toolsBar = new ToolsBar_1.ToolsBar([0, 0], null);
             this._progress = 0;
+            if (window.RESULT_MODAL_IN_MENU) {
+                main_1._.game.score = 999;
+                main_1._.game.ShowResModal();
+            }
             this.progressAnim = Application_1.TweenMax.to(this, exports.LEVEL_TIME, { progress: 1, ease: Application_1.Linear.easeNone,
                 onComplete: function () {
                     _this.ShowResModal();
@@ -218,9 +222,11 @@ define(["require", "exports", "../Neu/Stage", "../main", "../Neu/BaseObjects/O",
         };
         Game.prototype.AddZeroes = function (x) {
             if (x < 10)
+                return '0000' + x.toString();
+            else if (x < 100)
+                return '000' + x.toString();
+            else if (x < 1000)
                 return '00' + x.toString();
-            if (x < 100)
-                return '0' + x.toString();
             return x.toString();
         };
         Game.prototype.updateTime = function () {
