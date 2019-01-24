@@ -14,7 +14,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "../Neu/Stage", "../main", "../Neu/BaseObjects/O", "../Socials", "./Menu", "../ProblemGenerator", "../Objects/ToolsBar", "../Neu/Application", "../Objects/AngryBar"], function (require, exports, Stage_1, main_1, O_1, Socials_1, Menu_1, ProblemGenerator_1, ToolsBar_1, Application_1, AngryBar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.LEVEL_TIME = 150.;
+    exports.LEVEL_TIME = 160.;
     exports.LevelsShapes = [
         [
             {
@@ -187,7 +187,7 @@ define(["require", "exports", "../Neu/Stage", "../main", "../Neu/BaseObjects/O",
             }
             this.pg.pause(true);
             Application_1.TweenMax.pauseAll(true, true, true);
-            this.resModal = main_1._.lm.load(main_1._.game, 'winmodal', null);
+            this.resModal = main_1._.lm.load(main_1._.game, 'winmodal', null, null, main_1._.screenCenterOffset);
             var win = main_1._.sm.findOne("scorewin", this.resModal);
             win.text = "Вы набрали " + this.score + " очков";
             var vk = main_1._.sm.findOne("btnvk", this.resModal);

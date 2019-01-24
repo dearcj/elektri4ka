@@ -188,6 +188,9 @@
             <filename>sources/fb.png</filename>
             <filename>sources/vk.png</filename>
             <filename>sources/empty.png</filename>
+            <filename>../../../../Downloads/Telegram Desktop/menu_button_1.png</filename>
+            <filename>sources/menu_buttonnazad.png</filename>
+            <filename>sources/menu_button_4.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

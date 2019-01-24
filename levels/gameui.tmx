@@ -10,8 +10,8 @@
   <object id="14" gid="90" x="-37.2" y="846" width="710.4" height="582"/>
   <object id="15" gid="89" x="-54" y="1136" width="743" height="340"/>
   <object id="16" gid="115" x="-21" y="272" width="675" height="25"/>
-  <object id="17" gid="113" x="17" y="222.258" width="410.095" height="42.4236"/>
-  <object id="18" name="progressbar" gid="114" x="17.9053" y="222.445" width="410.095" height="42.4236"/>
+  <object id="17" gid="113" x="17" y="208" width="410.095" height="42"/>
+  <object id="18" name="progressbar" gid="114" x="17.9053" y="208" width="410.095" height="42"/>
  </objectgroup>
  <objectgroup color="#b02020" draworder="index" id="3" name="utils" locked="1" opacity="0.1">
   <object id="2" x="0" y="0" width="640" height="1024"/>
@@ -19,7 +19,7 @@
  <objectgroup id="2" name="main"/>
  <objectgroup id="4" name="gui">
   <object id="3" type="AngryBar" x="309" y="32" width="65" height="73"/>
-  <object id="4" name="score" type="TextBox" x="470" y="179" width="146" height="38">
+  <object id="4" name="score" type="TextBox" x="470" y="154" width="146" height="38">
    <properties>
     <property name="align" value="right"/>
     <property name="fontscale" type="float" value="1.1"/>

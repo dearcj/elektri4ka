@@ -28,12 +28,12 @@ export class ScrollBox extends O {
     private _maskHeight: number = 100;
     container: PIXI.Container;
     private mask: PIXI.Graphics;
-    public maxScroll: number = 1500;
-
+    public maxScroll: number = 1250;
+//asdasd
 process() {
     super.process();
     if (this.scrolling) {
-        this.scrollDown(-5);
+        this.scrollDown(-10);
     }
 }
 
@@ -63,22 +63,22 @@ process() {
 
         this.gfx.buttonMode = true;
         this.gfx.interactive = true;
-        this.gfx.on('mousedown', this.scrollstart.bind(this)).
+      /*  this.gfx.on('mousedown', this.scrollstart.bind(this)).
         on('touchstart', this.touchstart.bind(this)).
         on('mouseup', this.scrollend.bind(this)).
         on('mouseupoutside', this.scrollend.bind(this)).
         on('touchendoutside', this.scrollend.bind(this)).
         on('touchmove', this.touchmove.bind(this)).
         on('touchend', this.touchend.bind(this));
-
-        this.bindedWheel = this.onWheel.bind(this);
-        document.addEventListener("mousewheel", this.bindedWheel, false);
+*/
+  //      this.bindedWheel = this.onWheel.bind(this);
+     //   document.addEventListener("mousewheel", this.bindedWheel, false);
 
     }
 
     onDestroy() {
         super.onDestroy();
-        document.removeEventListener("mousewheel", this.bindedWheel, false);
+       // document.removeEventListener("mousewheel", this.bindedWheel, false);
     }
 
     onWheel(e) {

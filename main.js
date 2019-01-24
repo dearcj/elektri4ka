@@ -63,6 +63,9 @@ define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu
             var resize = function () {
                 _this.appScale = ((window.innerHeight) / _this.SCR_HEIGHT) / window.devicePixelRatio;
                 var neww = window.innerHeight * (_this.SCR_WIDTH / _this.SCR_HEIGHT);
+                //            let delta = (window.innerWidth - neww) / 2;
+                //           if (delta < 0) delta = 0;
+                _this.screenCenterOffset = [0, 0]; //[delta * this.appScale,0];
                 _this.app.renderer.resize(Math.min(window.innerWidth, neww) / window.devicePixelRatio, window.innerHeight / window.devicePixelRatio);
                 _this.app.stage.scale.set(_this.appScale, _this.appScale);
             };
@@ -73,7 +76,6 @@ define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu
             setTimeout(function () {
                 resize();
             }, 0);
-            this.screenCenterOffset = [0, 0];
             this.SCR_WIDTH_HALF = this.SCR_WIDTH * .5;
             this.SCR_HEIGHT_HALF = this.SCR_HEIGHT * .5;
             this.engine = matter_1.Engine.create();
@@ -114,6 +116,7 @@ define(["require", "exports", "./Neu/Application", "./Neu/Sound", "./Stages/Menu
             this.isInitialLoading = false;
             this.loadTime = (new Date()).getTime() - window.startTime.getTime();
             this.clearPreloader();
+            Application_1.PIXI.BitmapText.fonts[TextBox_1.TextBox.DEFAULT_FONT].lineHeight *= 0.7;
             var interaction = this.app.renderer.plugins.interaction;
             document.addEventListener('mousedown', function (e) {
                 if (_this.globalMouseDown)

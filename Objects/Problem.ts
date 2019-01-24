@@ -20,9 +20,9 @@ export class Problem extends O {
     private textField2: HeavenBitmapText;
 
     solveAnimation() {
-        TweenMax.to(this.gfx, 2.4, {alpha: 0.});
+        TweenMax.to(this.gfx, 1.4, {alpha: 0.});
         for (let x of this.toolsSolved) {
-            TweenMax.to(x.gfx, 2.1, {alpha: 0.});
+            TweenMax.to(x.gfx, 1.4, {alpha: 0.});
         }
     }
 
@@ -69,6 +69,8 @@ export class Problem extends O {
             this.bigProblemSprite.y = 35;
             this.bigProblemSprite.x = 50;
             this.gfxBrick.tint = 0xff4633;
+            this.gfxBrick.color.lightRgba = 0xff4633;
+
         } else {
             this.bigProblemSprite = O.rp(this.bigProblemSprite);
         }
@@ -79,7 +81,7 @@ export class Problem extends O {
         super(pos, null);
         this.problemType = problemType;
         this.gfx = _.cc(
-        this.gfxBrick = new PIXI.Sprite(PIXI.Texture.WHITE);
+        this.gfxBrick = new PIXI.heaven.Sprite(PIXI.Texture.WHITE);
         let lines = problemType.text.split("\n");
 
         this.textField = TextBox.createTextField({}, {fontscale: 0.5, align: "left", text: lines[0]});
@@ -101,9 +103,6 @@ export class Problem extends O {
             this.bigProblem = true;
         }
 
-        if (problemType.complicated) {
-            this.gfxBrick.tint = 0xff601a;
-        }
         this.gfx.addChild(this.textField);
 
         if (this.textField2)
@@ -121,6 +120,16 @@ export class Problem extends O {
             inx--;
         }
     }
+
+    public failanim() {
+        TweenMax.to(this.gfxBrick.color, 0.05, {lightG: 0, lightB: 0, yoyo: true, repeat: 4});
+        TweenMax.to(this.gfx, 0.9, {alpha: 0.});
+
+        for (let x of this.toolsSolved) {
+            TweenMax.to(x.gfx, 0.9, {alpha: 0.});
+        }
+    }
+
 
     private wrongSolutionAnim() {
         TweenMax.to(this, 0.05, {y: this.y - 2, yoyo: true, repeat: 5});

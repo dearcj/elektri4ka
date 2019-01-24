@@ -21,6 +21,7 @@ export class ToolsBar extends O {
     }
 
     dragMove(btn: ButtonTool, e: any) {
+        btn.gfx.tint = 0xffffff;
         if (btn.gfx.dragging)
         {
             let newPosition = e.data.getLocalPosition(btn.gfx.parent);
@@ -33,6 +34,10 @@ export class ToolsBar extends O {
         let pos = e.data.getLocalPosition(btn.gfx.parent);
         let res = _.game.pg.tryDropSolution(btn, [pos.x, pos.y]);
 
+       for (let t of this.tools) {
+            t.tint = 0xffffff;
+        }
+
         if (!res) {
             btn.killNow();
         }
@@ -44,36 +49,37 @@ export class ToolsBar extends O {
     dragStart(btn: ButtonTool, e: any) {
         btn.gfx.dragging  = true;
         let inx = this.tools.indexOf(btn);
-        let b =  this.createToolBtn(btn.solution, inx);
 
+        let b =  this.createToolBtn(btn.solution, inx);
+        b.fadeOnMouseDown = false;
         this.tools[inx] = b;
 
         btn.gfx.parent.setChildIndex(btn.gfx, btn.gfx.parent.children.length - 1);
 
-        setTimeout(()=>{
-            btn.gfx.tint = 0xffffff;
-        }, 0);
-        btn.gfx.tint = 0xffffff;
+        b.tint = 0x888888;
     }
 
     public createToolBtn(sol: SolutionType, inx: number):ButtonTool {
-        let button = new ButtonTool([60 + inx * 130, SCR_HEIGHT - 170], _.cs(sol.ico, _.sm.gui));
+        let button = new ButtonTool([60 + inx * 130, SCR_HEIGHT - 151], _.cs(sol.ico, _.sm.gui));
         button.gfx.scale.set(0.7);
         button.init({});
         button.solution = sol;
-
+        button.fadeOnMouseDown = false;
         button.gfx.x = button.x;
         button.gfx.y = button.y;
+
         button.gfx.
         on('mousedown', this.dragStart.bind(this, button)).
         on('mousemove', this.dragMove.bind(this, button)).
+        on('mouseupoutside', this.dragEnd.bind(this, button)).
         on('mouseup', this.dragEnd.bind(this, button)).
         on('touchstart', this.dragStart.bind(this, button)).
         on('touchmove', this.dragMove.bind(this, button)).
+        on('touchendoutside', this.dragEnd.bind(this, button)).
         on('touchend', this.dragEnd.bind(this, button));
 
         let x = new TextBox(m.v2cp(button.pos));
-        x.y += 100;
+        x.y += 87;
         x.init({fontscale: 0.4, align: "center"});
         x.text = sol.text;
         return button;

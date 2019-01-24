@@ -7,6 +7,8 @@ import {LEVEL_TIME} from "./Stages/Game";
 import {ButtonTool} from "./Objects/ButtonTool";
 import {AngryBar} from "./Objects/AngryBar";
 
+let COMPILCATED_COLOR = [0xff/ 255, 0x60 / 255, 0x1a / 255];
+
 export type SolutionType = {
     type: number,
     text: string,
@@ -51,8 +53,8 @@ export const SOLUTIONS: Array<SolutionType> = [{
     },
     {
         type: 5,
-        text: `Альтернатив-
-ное 
+        text: `Альтерна-
+тивное 
 движение`,
         ico: "icon_5",
     }];
@@ -82,7 +84,7 @@ const PROBLEMS: ProblemType[] = [
         type: 2,
         text: `Потеря
 питания`,
-        startAt: 30,
+        startAt: 0,
         solutions: [1, 4],
         complicated: true,
         score: 200,
@@ -94,7 +96,7 @@ const PROBLEMS: ProblemType[] = [
         text: `Стоп-кран`,
         solutions: [4],
         complicated: false,
-        score: 50,
+        score: 30,
     },
     {
         penalty: 0.1,
@@ -111,7 +113,7 @@ const PROBLEMS: ProblemType[] = [
         type: 5,
         text: `Плохо
 пассажиру`,
-        startAt: 40,
+        startAt: 5,
         solutions: [3, 4],
         complicated: true,
         score: 50,
@@ -121,7 +123,7 @@ const PROBLEMS: ProblemType[] = [
         type: 6,
         text: `Сбили
 лося`,
-        startAt: 0,
+        startAt: 10,
         solutions: [1, 4],
         complicated: false,
         score: 50,
@@ -131,7 +133,7 @@ const PROBLEMS: ProblemType[] = [
         type: 7,
         text: `Сбили
 лося`,
-        startAt: 60,
+        startAt: 30,
         solutions: [1, 4, 5],
         complicated: true,
         score: 200,
@@ -151,7 +153,7 @@ const PROBLEMS: ProblemType[] = [
         type: 9,
         text: `Украли
 сумку`,
-        startAt: 40,
+        startAt: 30,
         solutions: [2, 4],
         complicated: true,
         score: 200,
@@ -160,7 +162,7 @@ const PROBLEMS: ProblemType[] = [
         penalty: 0.1,
         type: 10,
         text: `Вандализм`,
-        startAt: 10,
+        startAt: 15,
         solutions: [1],
         complicated: false,
         score: 50,
@@ -234,7 +236,7 @@ export class ProblemGenerator extends O {
     process() {
         if (this.paused) return;
         super.process();
-        let speed = this.difficulty / 2;
+        let speed = this.difficulty * 0.7;
 
         if (this.running) {
             for (let p of this.problems) {
@@ -248,14 +250,35 @@ export class ProblemGenerator extends O {
                     p.gfxBrick.width += spdres;
                 p.x -= spdres;
 
+                let red = (SCR_WIDTH / 1.5 - p.x) / SCR_WIDTH;
+                if (red<0) red = 0;
+
                 if (p.solved)
                 for (let s of p.toolsSolved) {
                     s.gfx.x -= spdres;
+                } else {
+                    if (!p.bigProblem) {
+                        if (p.problemType.complicated) {
+                            p.gfxBrick.color.lightR = (COMPILCATED_COLOR[0]);
+                            p.gfxBrick.color.lightB = (COMPILCATED_COLOR[2] - red / 1.5);
+                            p.gfxBrick.color.lightG = (COMPILCATED_COLOR[1] - red / 1.5);
+
+                            if (p.gfxBrick.color.lightB < 0)
+                                p.gfxBrick.color.lightB = 0;
+
+                            if (p.gfxBrick.color.lightG < 0)
+                                p.gfxBrick.color.lightG = 0
+                        } else {
+                            p.gfxBrick.color.lightB = (1 - red / 1.5);
+                            p.gfxBrick.color.lightG = (1 - red / 1.5);
+                        }
+                    }
                 }
+
                 if (!p.solved && p.x < 0) {
                     _.sm.findByType(AngryBar)[0].value -= 1.2*p.problemType.penalty;
 
-                    this.solveProblem(p)
+                    this.solveProblem(p, true)
                 }
             }
         }
@@ -289,15 +312,21 @@ export class ProblemGenerator extends O {
             }
 
             this.timeout();
-        }, start? 0 : 1.9 + (0.5 + 0.5 *Math.random()) * (4 - Math.pow(this.difficulty, 1.28) ));
+        }, start? 0 :
+            1.7 + (0.8 + 0.2 *Math.random()) * (3.6 - Math.pow(this.difficulty, 1.28) ));
     }
 
     run() {
         this.running = true;
-        this.difficulty = 1.6;
-        this.diffTween = TweenMax.to(this, LEVEL_TIME, {difficulty: 3.6, ease: Linear.easeNone});
+        this.difficulty = 1.45;
+        this.diffTween = TweenMax.to(this, LEVEL_TIME, {difficulty: 2.7, ease: Linear.easeNone});
+
 
         this.timeout(true);
+        /*this.spawnProblemOnLine(1);
+        this.spawnProblemOnLine(2);
+        this.spawnProblemOnLine(3);
+        this.spawnProblemOnLine(4);*/
     }
 
     private spawnProblemOnLine(lineNum: number) {
@@ -311,6 +340,7 @@ export class ProblemGenerator extends O {
             return res;
         });
         let prob = m.getRand(availProblems);
+        
         let problem = new Problem([_.SCR_WIDTH + 60, SCR_HEIGHT - lineNum * 100 - 335], null, prob);
         _.sm.main.addChild(problem.gfx);
         this.problems.push(problem);
@@ -318,9 +348,10 @@ export class ProblemGenerator extends O {
         this.lines[lineNum] = problem;
     }
 
-    private solveProblem(problem: Problem) {
+    private solveProblem(problem: Problem, failed: boolean = false) {
         problem.solved = true;
-        problem.solveAnimation();
+        if (!failed)
+        problem.solveAnimation(); else problem.failanim();
         problem.gfxBrick.width = SCR_WIDTH - problem.gfx.x + 3;
 
         let inx = 0;

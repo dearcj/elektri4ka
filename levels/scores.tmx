@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="1" nextlayerid="7" nextobjectid="35">
+ <tileset firstgid="1" source="elektri4ka.tsx"/>
+ <objectgroup draworder="index" id="5" name="bg">
+  <object id="13" gid="89" x="-120" y="1111" width="875" height="1194">
+   <properties>
+    <property name="color" type="color" value="#ffcecece"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#b02020" draworder="index" id="3" name="utils" locked="1" opacity="0.1">
+  <object id="2" x="0" y="0" width="640" height="1024"/>
+ </objectgroup>
+ <objectgroup id="4" name="gui">
+  <object id="31" name="btnback" type="Button" gid="87" x="10" y="132" width="97" height="122.867"/>
+  <object id="32" type="ScrollBox" x="0" y="142" width="629" height="854"/>
+  <object id="33" type="TextBox" x="289" y="26" width="103" height="52">
+   <properties>
+    <property name="fontscale" type="float" value="1"/>
+    <property name="text" value="ТАБЛИЦА"/>
+   </properties>
+  </object>
+  <object id="34" type="TextBox" x="223" y="78" width="244" height="28">
+   <properties>
+    <property name="fontscale" type="float" value="1"/>
+    <property name="text" value="РЕКОРДОВ"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="2" name="main"/>
+ <objectgroup id="6" name="gui2"/>
+</map>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="1" nextlayerid="8" nextobjectid="130">
+ <tileset firstgid="1" source="elektri4ka.tsx"/>
+ <objectgroup draworder="index" id="5" name="bg">
+  <object id="13" gid="89" x="-32" y="1053" width="699" height="1094">
+   <properties>
+    <property name="color" type="color" value="#ffcecece"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#b02020" draworder="index" id="3" name="utils" locked="1" opacity="0.1">
+  <object id="2" x="0" y="0" width="640" height="1024"/>
+ </objectgroup>
+ <objectgroup id="4" name="gui">
+  <object id="126" type="ScrollBox" x="17" y="138" width="629" height="705"/>
+ </objectgroup>
+ <objectgroup id="2" name="main"/>
+ <objectgroup id="7" name="scrollbox">
+  <object id="102" name="toscrollbox" type="TextBox" x="8" y="925" width="458" height="70">
+   <properties>
+    <property name="align" value="left"/>
+    <property name="fontscale" type="float" value="0.5"/>
+    <property name="text">Добро пожаловать в игру «Электрички», которая 
+познакомит вас с жизнью диспетчера пригородных 
+электричек, а также поможет развить память 
+и умение переключаться с одной когнитивной 
+системы мозга на другую — их еще обычно называют 
+правым и левым полушарием (что, конечно, неверно). 
+Итак, на железной дороге время от времени 
+могут возникать следующие проблемы: 
+
+1) Забытая в вагоне сумка
+2) Случай вандализма
+3) Срыв стоп-крана
+4) Падение дерева на пути
+5) Столкновение состава с лосем
+6) Необходимость оказать срочную 
+медицинскую помощь пассажиру
+7) Перекрытие путей
+8) Чрезвычайное происшествие
+
+Первые семь проблем встречаются как в легкой 
+версии, так и в сложной. Восьмая легкой не бывает. 
+Сложные варианты помечены цветом. 
+Обо всех проблемах в игре сообщается словами.
+
+У каждой проблемы есть решение. 
+Решения обозначены с помощью иконок:
+
+
+1) Вызвать ремонтников
+
+
+
+
+2) Вызвать полицию
+
+
+
+
+3) Вызвать медиков
+
+
+
+
+4) Информировать пассажиров
+
+
+
+
+
+
+5) Организовать альтернативные пути движения
+
+
+
+
+
+
+Запомните, что означают эти иконки. 
+Каждая проблема представлена в виде полоски.
+ Чтобы решить ее, просто повесьте на нее иконку. 
+Легкие проблемы решаются 1–2 иконками. 
+Сложные — 2–3 иконками.
+
+
+
+
+Перед тем как начать играть, подумайте, какие 
+решения могут подойти для той или иной проблемы. 
+Во время игры смело используйте кнопку «Пауза». 
+Итак, поехали.</property>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="6" name="gui2">
+  <object id="31" name="btnreturn" type="Button" gid="87" x="10" y="130" width="97" height="122.867"/>
+  <object id="32" type="TextBox" x="225" y="49" width="207" height="69">
+   <properties>
+    <property name="fontscale" type="float" value="1"/>
+    <property name="text" value="ПРАВИЛА"/>
+   </properties>
+  </object>
+  <object id="113" name="toscrollbox" gid="91" x="48" y="878" width="99" height="99"/>
+  <object id="114" name="toscrollbox" gid="97" x="48" y="1297.86" width="99" height="99"/>
+  <object id="115" name="toscrollbox" gid="93" x="48" y="1017.36" width="99" height="99"/>
+  <object id="116" name="toscrollbox" gid="99" x="48" y="1496" width="99" height="99"/>
+  <object id="117" name="toscrollbox" gid="95" x="48" y="1156.92" width="99" height="99"/>
+  <object id="106" name="btnplay" type="Button" gid="104" x="345" y="981" width="270.519" height="88"/>
+  <object id="128" name="btnnext" type="Button" gid="135" x="342" y="981" width="270.52" height="88"/>
+  <object id="129" name="btnback" type="Button" gid="136" x="29" y="981" width="270.52" height="88"/>
+ </objectgroup>
+</map>

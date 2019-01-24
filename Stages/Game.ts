@@ -10,7 +10,8 @@ import {ToolsBar} from "../Objects/ToolsBar";
 import {Linear, TweenMax} from "../Neu/Application";
 import {AngryBar} from "../Objects/AngryBar";
 
-export const LEVEL_TIME = 150.;
+export const LEVEL_TIME = 160.;
+
 
 type LevelShape = {
     ShapeID: number,
@@ -145,6 +146,7 @@ export class Game extends Stage {
             _.game.ShowResModal();
         }
 
+
         this.progressAnim = TweenMax.to(this, LEVEL_TIME, {progress: 1, ease: Linear.easeNone,
             onComplete: ()=>{
             this.ShowResModal();
@@ -158,6 +160,10 @@ export class Game extends Stage {
             if (document.hidden) {
                 this.pause(true)
             } else {
+                if (this.resModal) {
+                    return;
+                }
+
                 this.pause(false)
             }
         });
@@ -193,6 +199,7 @@ export class Game extends Stage {
     }
 
     onHide(s: Stage) {
+        _.sm.removeList(this.resModal);
         this.whiteSpace = O.rp(this.whiteSpace);
         this.timeInterval = _.killTweens(this.timeInterval);
         this.progressAnim = _.killTweens(this.progressAnim);
@@ -205,9 +212,11 @@ export class Game extends Stage {
             return;
         }
 
+        this.secs = Math.round(this.progress  * LEVEL_TIME);
+
         this.pg.pause(true);
         TweenMax.pauseAll(true, true, true);
-        this.resModal = _.lm.load(_.game, 'winmodal', null);
+        this.resModal = _.lm.load(_.game, 'winmodal', null, null,_.screenCenterOffset);
         let win = _.sm.findOne("scorewin", this.resModal);
         (<TextBox>win).text = "Вы набрали " + this.score + " очков";
 
@@ -218,7 +227,7 @@ export class Game extends Stage {
           _.sm.openStage(this);
         };
         vk.click = () => {
-            vkpost(``);
+            vkpost(`Меня хватило на ` + this.secs.toString() + " секунд в игре „Электрички“");
         };
 
         fb.click = () => {

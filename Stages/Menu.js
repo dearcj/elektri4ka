@@ -45,7 +45,7 @@ define(["require", "exports", "../Neu/Stage", "../main", "../Neu/BaseObjects/Tex
         };
         Menu.prototype.onShow = function () {
             _super.prototype.onShow.call(this);
-            main_1._.lm.load(this, 'menu', null);
+            main_1._.lm.load(this, 'menu', null, null, main_1._.screenCenterOffset);
             main_1._.sm.findOne("btnplay").click = function () {
                 // vkpost("lalalal");
                 main_1._.rules.withPlay = true;

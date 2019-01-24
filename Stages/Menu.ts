@@ -31,7 +31,7 @@ export class Menu extends Stage {
 
     onShow() {
         super.onShow();
-        _.lm.load(this, 'menu', null);
+        _.lm.load(this, 'menu', null, null, _.screenCenterOffset);
         (<Button>_.sm.findOne("btnplay")).click = ()=>{
            // vkpost("lalalal");
             _.rules.withPlay = true;

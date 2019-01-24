@@ -1,4 +1,4 @@
-import './node_modules/pixi-heaven/dist/pixi-heaven.js';
+import './lib/pixi-heaven.js';
 import {Application, PIXI, TweenLite, TweenMax} from "./Neu/Application";
 import {Sound} from "./Neu/Sound";
 import {Menu} from "./Stages/Menu";
@@ -10,7 +10,7 @@ import {
     CAMERA_DEBUG,
     MAX_SCR_HEIGHT,
     MAX_SCR_WIDTH,
-} from "./ClientSettings";
+} from "./ClientSettings";//asd
 import {TextBox} from "./Neu/BaseObjects/TextBox";
 import {BaseLighting} from "./Neu/BaseObjects/BaseLighting";
 import {LevelNames} from "./ObjectsList";
@@ -20,6 +20,7 @@ import {BlackTransition} from "./Neu/Transitions/BlackTransition";
 import {Controls} from "./Neu/Controls";
 import {SM} from "./Neu/SM";
 import {Loader} from "./Neu/Loader";
+import {DEFAULT_ECDH_CURVE} from "tls";
 export let $: any = (<any>window).$;
 export type PIXIContainer = any;
 
@@ -90,12 +91,30 @@ export class Main extends Application {
         this.SCR_HEIGHT = SCR_HEIGHT;
         console.log("Device pixel ratio: ", window.devicePixelRatio);
         let resize = () => {
-            this.appScale = ((window.innerHeight) / this.SCR_HEIGHT) / window.devicePixelRatio;
-            let neww = window.innerHeight * (this.SCR_WIDTH / this.SCR_HEIGHT);
-            this.app.renderer.resize(Math.min(window.innerWidth, neww) / window.devicePixelRatio, window.innerHeight / window.devicePixelRatio);
+
+            let myratio = this.SCR_WIDTH / this.SCR_HEIGHT;
+            let screenratio = window.innerWidth / window.innerHeight;
+
+            if (myratio > screenratio) {
+                this.appScale = ((window.innerWidth) / this.SCR_WIDTH) ;
+                let nn = window.innerWidth * myratio;
+            } else {
+                this.appScale = ((window.innerHeight) / this.SCR_HEIGHT) ;
+                let nn = window.innerHeight * myratio;
+
+            }
+            this.app.renderer.resize(this.SCR_WIDTH * this.appScale, this.SCR_HEIGHT * this.appScale);
+
+
+            //            let delta = (window.innerWidth - neww) / 2;
+ //           if (delta < 0) delta = 0;
+            this.screenCenterOffset = [0, 0];//[delta * this.appScale,0];
+
             this.app.stage.scale.set(this.appScale, this.appScale);
+
         };
         window.addEventListener('resize', resize);
+
 
         setTimeout(()=>{
             resize();
@@ -103,7 +122,7 @@ export class Main extends Application {
         setTimeout(()=>{
             resize();
         }, 0);
-        this.screenCenterOffset = [0,0];
+
         this.SCR_WIDTH_HALF = this.SCR_WIDTH * .5;
         this.SCR_HEIGHT_HALF = this.SCR_HEIGHT * .5;
 
@@ -123,8 +142,8 @@ export class Main extends Application {
         this.app = new PIXI.Application(this.SCR_WIDTH, this.SCR_HEIGHT, {
             autoStart: false,
             clearBeforeRender: true,
-            resolution: this.resolution, antialias: false,
-            preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xffffff,
+            resolution: 1, antialias: false,
+            preserveDrawingBuffer: false, forceFXAA: false, backgroundColor: 0xffffff,
         });
 
         document.body.appendChild(this.app.view);
@@ -144,9 +163,6 @@ export class Main extends Application {
 
 
         resize();
-
-
-        //(<BlackTransition>_.sm.transition).color = 0xffffff;
     };
 
     loadComplete(): void {
@@ -154,6 +170,7 @@ export class Main extends Application {
         this.loadTime = (new Date()).getTime() - (<any>window).startTime.getTime();
 
         this.clearPreloader();
+        PIXI.BitmapText.fonts[TextBox.DEFAULT_FONT].lineHeight *= 0.7;
 
         const interaction = this.app.renderer.plugins.interaction;
         document.addEventListener('mousedown', (e) => {

@@ -14,6 +14,7 @@
     <script src="lib/pixi-layers.js"></script>
     <script src="lib/fmath.js"></script>
     <script src="lib/pixi-ui.js"></script>
+    <script src="lib/pixi-spine.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 
     <script src="http://vk.com/js/api/openapi.js" type="text/javascript">
@@ -31,9 +32,16 @@
         window.PIXIRatio = 0.5;
     </script>
 
-    <script data-main="./main.js" src="lib/require.js"></script>
-
+    <script src="lib/require.js"></script>
+    <script src="bundle/bundle.js"></script>
     <script>
+
+        requirejs(['main'],
+                function   (main) {
+                    console.log(main);
+            //jQuery, canvas and the app/sub module are all
+                    //loaded and can be used here now.
+                });
     window.startTime = new Date();
         function doubleRescale() {
             setTimeout(rescale, 600);

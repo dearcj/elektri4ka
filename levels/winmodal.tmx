@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="1" nextlayerid="8" nextobjectid="117">
+ <tileset firstgid="1" source="elektri4ka.tsx"/>
+ <objectgroup draworder="index" id="5" name="bg"/>
+ <objectgroup color="#b02020" draworder="index" id="3" name="utils" locked="1" opacity="0.1">
+  <object id="2" x="0" y="0" width="640" height="1024"/>
+ </objectgroup>
+ <objectgroup id="4" name="gui"/>
+ <objectgroup id="2" name="main"/>
+ <objectgroup id="7" name="scrollbox"/>
+ <objectgroup draworder="index" id="6" name="gui2">
+  <object id="107" gid="90" x="-68" y="749" width="744" height="436">
+   <properties>
+    <property name="alpha" type="float" value="0.9"/>
+   </properties>
+  </object>
+  <object id="109" type="TextBox" x="101" y="255" width="458" height="70">
+   <properties>
+    <property name="align" value="left"/>
+    <property name="fontscale" type="float" value="0.5"/>
+    <property name="text" value=""/>
+   </properties>
+  </object>
+  <object id="110" name="btnfb" type="Button" gid="131" x="207" y="716" width="100" height="100"/>
+  <object id="111" name="btnvk" type="Button" gid="132" x="353" y="716" width="100" height="100"/>
+  <object id="112" name="scorewin" type="TextBox" x="105" y="445" width="458" height="70">
+   <properties>
+    <property name="align" value="center"/>
+    <property name="fontscale" type="float" value="0.75"/>
+    <property name="text" value=""/>
+   </properties>
+  </object>
+  <object id="114" type="TextBox" x="107" y="377" width="458" height="70">
+   <properties>
+    <property name="align" value="center"/>
+    <property name="fontscale" type="float" value="0.85"/>
+    <property name="text" value="Поздравляем!"/>
+   </properties>
+  </object>
+  <object id="116" name="btnretry" type="Button" gid="134" x="228" y="599" width="200" height="70">
+   <properties>
+    <property name="text" value="Попробовать снова"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

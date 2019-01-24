@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="1" nextlayerid="7" nextobjectid="31">
+ <tileset firstgid="1" source="elektri4ka.tsx"/>
+ <objectgroup draworder="index" id="5" name="bg">
+  <object id="13" gid="89" x="-94" y="1053" width="785" height="1094">
+   <properties>
+    <property name="color" type="color" value="#ffcecece"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#b02020" draworder="index" id="3" name="utils" locked="1" opacity="0.1">
+  <object id="2" x="0" y="0" width="640" height="1024"/>
+ </objectgroup>
+ <objectgroup id="4" name="gui">
+  <object id="27" name="btnplay" type="Button" gid="105" x="97" y="403" width="441.89" height="143.747"/>
+  <object id="28" name="btnscore" type="Button" gid="106" x="101.259" y="787.253" width="441.89" height="143.747"/>
+  <object id="29" name="btnrules" type="Button" gid="108" x="97" y="594.288" width="441.89" height="143.747"/>
+  <object id="30" gid="102" x="31" y="170.901" width="578.175" height="99.9006"/>
+ </objectgroup>
+ <objectgroup id="2" name="main"/>
+ <objectgroup id="6" name="gui2"/>
+</map>
