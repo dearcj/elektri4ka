@@ -90,38 +90,32 @@ export class Main extends Application {
         this.SCR_WIDTH = SCR_WIDTH;
         this.SCR_HEIGHT = SCR_HEIGHT;
         console.log("Device pixel ratio: ", window.devicePixelRatio);
-        let resize = () => {
 
-            let myratio = this.SCR_WIDTH / this.SCR_HEIGHT;
+
+        //PIXI.settings.MIPMAP_TEXTURES = false;
+        this.resolution = window.devicePixelRatio;
+
+        console.log("Setting resolution: ", this.resolution);//asdas
+
+        let resize = () => {
+/*            let myratio = this.SCR_WIDTH / this.SCR_HEIGHT;
             let screenratio = window.innerWidth / window.innerHeight;
 
             if (myratio > screenratio) {
                 this.appScale = ((window.innerWidth) / this.SCR_WIDTH) ;
-                let nn = window.innerWidth * myratio;
             } else {
                 this.appScale = ((window.innerHeight) / this.SCR_HEIGHT) ;
-                let nn = window.innerHeight * myratio;
-
             }
-            this.app.renderer.resize(this.SCR_WIDTH * this.appScale, this.SCR_HEIGHT * this.appScale);
-
-
-            //            let delta = (window.innerWidth - neww) / 2;
- //           if (delta < 0) delta = 0;
-            this.screenCenterOffset = [0, 0];//[delta * this.appScale,0];
+            this.app.renderer.resize(this.SCR_WIDTH * this.appScale,
+                this.SCR_HEIGHT * this.appScale);
 
             this.app.stage.scale.set(this.appScale, this.appScale);
+*/
+            this.app.renderer.view.style.width = "100%";
 
         };
-        window.addEventListener('resize', resize);
+        this.screenCenterOffset = [0, 0];//[delta * this.appScale,0];
 
-
-        setTimeout(()=>{
-            resize();
-        }, 200);
-        setTimeout(()=>{
-            resize();
-        }, 0);
 
         this.SCR_WIDTH_HALF = this.SCR_WIDTH * .5;
         this.SCR_HEIGHT_HALF = this.SCR_HEIGHT * .5;
@@ -138,13 +132,21 @@ export class Main extends Application {
         this.controls = new Controls();
         this.PIXI = PIXI;
 
-        this.resolution = window.devicePixelRatio;
         this.app = new PIXI.Application(this.SCR_WIDTH, this.SCR_HEIGHT, {
             autoStart: false,
+            autoDensity: false,
             clearBeforeRender: true,
-            resolution: 1, antialias: false,
-            preserveDrawingBuffer: false, forceFXAA: false, backgroundColor: 0xffffff,
+            resolution: this.resolution ,backgroundColor: 0xffffff,
         });
+        window.addEventListener('resize', resize);
+        this.app.renderer.view.style.width = "100%";
+
+     //  this.app.renderer.autoResize = true;
+      // resize();
+
+        setTimeout(()=>{
+            resize();
+        }, 0);
 
         document.body.appendChild(this.app.view);
         this.app.stage = new PIXI.display.Stage();
@@ -160,9 +162,6 @@ export class Main extends Application {
 
         this.app.ticker.add(this.animate, this, PIXI.UPDATE_PRIORITY.HIGH);
         this.app.ticker.start();
-
-
-        resize();
     };
 
     loadComplete(): void {
